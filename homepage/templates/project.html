@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} cfs|homepage {% endblock %}
+
+{% block content %}
+<main class="container-fluid">   
+    <div class="row">
+        <div class="col-12 col-lg-2">
+            <ul>
+                <li class="list-item">Wireframe</li>
+                <li class="list-item">Requirements</li>
+                <li class="list-item">Schedule</li>
+                <li class="list-item">Brief</li>
+                <li class="list-item">Information</li>
+            </ul>
+        </div>
+        <div class="col-12 col-lg-7">
+            <h1>Title</h1>
+            <div class="img-container">
+                <img src="https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="image" class="img-fluid">
+            </div>
+            <div class="info-container">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus impedit sint voluptatem? Dicta repellendus rem recusandae! Sed reiciendis, delectus repellendus maiores quas aliquam ratione eius voluptatem iure explicabo sint quo?
+            </div>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="calendar">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus impedit sint voluptatem? Dicta repellendus rem recusandae! Sed reiciendis
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+{% endblock %}

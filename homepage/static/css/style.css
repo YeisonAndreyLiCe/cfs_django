@@ -1,0 +1,116 @@
+[data-theme="dark"]{
+    --body:var(--bs-dark);
+    --primary-10:#002029;
+    --primary-8:#00607a;
+    --primary-8-alpha:rgba(0, 96, 122, 0.8);
+    --font-color-10:var(--bs-white);
+    --font-color-6:rgba(248, 242, 242,0.6);
+    --font-color-title:rgba(248, 242, 242,1);
+    --btn-primary:#005066;
+    --btn-secondary:#00607a;
+}
+
+[data-theme="light"]{
+    --body:var(--bs-light);
+    --primary-10:rgba(248, 242, 242,1);
+    --primary-8:#64b6ac;
+    --primary-8-alpha:rgb(100, 182, 172,0.8);
+    --font-color-10:var(--bs-dark);
+    --font-color-6:rgba(0,0,0,0.6);
+    --font-color-title:rgba(0,0,0,1);
+    --btn-primary:#06d6a0;
+    --btn-secondary:#1b9aaa;
+}
+
+.scroll{
+    background-color: var(--btn-primary);
+}
+
+body{
+    background-color:var(--body);
+}
+
+header .navbar .navbar-brand, header .navbar .navbar-nav .nav-link, header .navbar .navbar-toggler-icon{ 
+    color:var(--font-color-10);
+}
+
+.navbar-toggler {
+    border: var(--font-color-10) solid 1px;
+}
+
+.offcanvas{
+    background-color:var(--body);
+}
+
+#offcanvasDarkNavbarLabel{
+    color:var(--font-color-title);
+}
+
+#theme-switcher{
+    border: 1px solid var(--primary-8);
+    color:var(--font-color-10);
+    border-radius: 15px 15px 15px 15px;
+
+}
+
+
+.switch {
+    background:var(--primary-10);
+    border-radius: 10px 10px 10px 10px;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    outline: none;
+}
+
+.switch::after {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background:var(--primary-8);
+    top: 0;
+    left: 0;
+    right: unset;
+    border-radius: 20px;
+    -webkit-transition: .3s ease all;
+    transition: .3s ease all;
+    -webkit-box-shadow: 0px 0px 2px 2px var(--primary-10);
+            box-shadow: 0px 0px 2px 2px var(--primary-10);
+}
+
+.switch.active {
+    background: var(--primary-10);
+    color: var(--font-color-10);
+}
+
+.switch.active::after {
+    right: 0;
+    left: unset;
+}
+
+.switch span {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    background: none;
+    color: var(--font-color-10);
+}
+
+main{
+    margin-top: 100px;
+    color: var(--font-color-10);
+}
+
+/* .footer {
+    position: unset;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1030;
+} */
