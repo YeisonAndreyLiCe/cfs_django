@@ -31,7 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'homepage',
+    'pre_login',
+    'post_login',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'cfs_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql', # change the database engine to postgresql
+        'NAME': 'cfs_database', # database name, it will be created if it does not exist
+        'USER': 'yeison', # postgres for macOS o 'USER': 'postgres', for Windows
+        'PASSWORD': 'my_postgres_Account', # password for the postgres user
+        'HOST': '127.0.0.1', # IP address localhost
+        'PORT': '5432', # port 5432 for macOS . run \conninfo to check the port
     }
 }
 

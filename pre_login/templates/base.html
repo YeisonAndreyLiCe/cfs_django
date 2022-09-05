@@ -36,12 +36,12 @@
                                     </div>
                                 </li>
                                 {% if user.is_authenticated %}
-                                <li class="nav-item"><a class="nav-link" href="/templates">Templates</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">My Projects</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/users/projects_templates">Templates</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/users/projects">My Projects</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">My Profile</a></li>
                                 {% else %}
-                                <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/login">Login</a></li>
                                 {% endif %}
                                 <li class="nav-item"><a class="nav-link" href="#">About CFS</a></li>
                             </ul>
