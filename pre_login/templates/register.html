@@ -8,15 +8,7 @@
 {% endblock %}
 
 {% block content %}
-    <main class="container d-flex justify-content-center">
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </main>
+    <p id="fetchTo" style="visibility:hidden;">/register_user/</p>
     <main class="container d-flex justify-content-center">
         <div class="form-group rounded p-3">
             <form action="/register_user/" method="POST" id="form" >
@@ -38,6 +30,9 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password">
+                    <div id="emailHelp" class="form-text">Password must be at least 8 characters</div>
+                    <div id="emailHelp" class="form-text">contain at least one number,</div>
+                    <div id="emailHelp" class="form-text">one uppercase and one lowercase letter</div>
                 </div>
                 <div class="mb-3">
                     <label for="confirm_password" class="form-label">Confirm Password</label>
@@ -52,5 +47,12 @@
             </form>
         </div>
     </main>
+    <div class="container d-flex justify-content-center my-2">
+        <div id="alertMessage"></div>
+    </div>
+{% endblock %}
 
+{% block js %}
+{{ block.super }}
+<script src="{% static 'js/validations_ajax.js' %}"></script>
 {% endblock %}

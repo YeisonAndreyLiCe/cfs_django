@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %} cfs|Login{% endblock %}
+
+{% block css %}
+{{ block.super }}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/projects_templates.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="container-fluid"> 
+    <h1 class="text-center"> welcome {{user.first_name }} {{ user.last_name}} </h1>
+    {% if not projects %}  
+            <p class="px-5 py-3"> 
+                you have no projects yet. To create a project click on the template below, you can also create a project from the templates section. You will be asked to fill in details about your project and then you can start adding your team members.
+            </p>
+            <div class="project-container row " >
+                <div class="project-img offset-md-1 col-md-10 col-lg-5">
+                    <a href="/users/{{user.id}}/new_project">
+                        <img src="{% static 'images/pexels-picjumbocom-196644.jpg' %}" alt="template image">
+                    </a>
+                </div>
+                <div class="project-info offset-md-1 col-md-10 col-lg-6">
+                    <p class="text-white-50">project features</p>
+                    <h1 class="text-info align-end">
+                        <a href="/users/{{user.id}}/new_project" class="nav-link"> Project Name</a>
+                    </h1>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus autem distinctio laborum praesentium vel. Dolores qui at quibusdam iure, placeat excepturi vero temporibus quae odio rerum laudantium tenetur saepe sit!
+                    </p>
+                    <p>
+                        <a href="https://www.pexels.com/fr-fr/photo/papier-d-imprimante-blanc-196645/" target="_blank" class="nav-link">Photo de picjumbo.com</a>
+                    </p>
+                    
+                </div>
+            </div>
+    {% else %}
+        {% for project in projects %}   
+            <div class="project-container row " >
+                <div class="project-img offset-md-1 col-md-10 col-lg-5">
+                    <img src="{% static 'images/img.jpg' %}" alt="{{project.name}} + wireframe">
+                </div>
+                <div class="project-info offset-md-1 col-md-10 col-lg-6">
+                    <p class="text-white-50">project features</p>
+                    <h1 class="text-info align-end">{{ project.name }}</h1>
+                    {{ project.description }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</main>
+{% endblock %}
+

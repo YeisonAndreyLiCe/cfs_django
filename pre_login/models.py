@@ -10,9 +10,9 @@ class UserManager(models.Manager):
         re_email = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         errors = {}
         if len(postData['first_name']) < 3:
-            errors["first_name"] = "Name should be at least 3 characters"
+            errors["first_name"] = "First Name should be at least 3 characters"
         if len(postData['last_name']) < 3:
-            errors["last_name"] = "Name should be at least 3 characters"
+            errors["last_name"] = "Last Name should be at least 3 characters"
         if not re_email.match(postData['email']):
             errors["email"] = "Invalid email address"
         if not re_password.match(postData['password']):

@@ -7,7 +7,8 @@
     <title>{% block title %} Document {% endblock %} </title>
     {% block css %}
         {% load static %}
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% endblock %}
 </head>
@@ -35,10 +36,11 @@
                                         </button>
                                     </div>
                                 </li>
-                                {% if user.is_authenticated %}
+                                {% if 'user_id' in request.session %}
                                 <li class="nav-item"><a class="nav-link" href="/users/projects_templates">Templates</a></li>
-                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/users/projects">My Projects</a></li>
+                                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/users/{{request.session.user_id}}/projects">My Projects</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">My Profile</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/logout">Logout </a></li>
                                 {% else %}
                                 <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/login">Login</a></li>
@@ -67,11 +69,11 @@
     {% endblock %}
     {% block js %}
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
     <script src="{% static 'js/theme.js' %}"></script>
     <script src="{% static 'js/scroll_bg_navbar.js' %}"></script>
-    
     {% endblock %}
 </body>
 </html>
