@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 import os
-from .models import User
-from django.contrib import messages
+from users.models import User
+#from django.contrib import messages
 import bcrypt
 from django.http import JsonResponse
-# Create your views here.
+
 def index(request):
     return render(request, 'index.html')
 
@@ -25,7 +25,6 @@ def register_user(request):
         if len(errors) > 0:
             for key, value in errors.items():
                 data[key] = value
-            print(data)
             return JsonResponse(data)
         else:
             password = request.POST['password']
@@ -37,22 +36,23 @@ def register_user(request):
                 password = pw_hash
             )
             request.session['user_id'] = user.id
-            return JsonResponse({'user_id': user.id, 'route': '/projects'})
+            route = '/users/'+str(user.id)+'/projects'
+            return JsonResponse({'route': route})
             #return redirect('/users/projects_templates')
     else:
         return redirect('/register')
 
 def login_user(request):
     if request.method == 'POST':
-        print(request.POST)
         user = User.objects.filter(email=request.POST['email'])
         if user:
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
-                return JsonResponse({'user_id': logged_user.id, 'route': '/projects'})
+                route = '/users/'+str(logged_user.id)+'/projects'
+                return JsonResponse({'route': route})
             else:
                 return JsonResponse({'error': 'Invalid Password'})
         else:
             return JsonResponse({'error': "Invalid Email"})
-    return redirect('/login')
+    return redirect('/register')

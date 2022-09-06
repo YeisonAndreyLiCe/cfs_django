@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %} cfs|homepage {% endblock %}
+{% block css %}
+{{ block.super }}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/projects_templates.css' %}">
+
+<style>
+    .primary{
+        background-color:var(--btn-primary);
+        color:var(--font-color-10);
+    }
+    
+    .secondary{
+        background-color:var(--btn-secondary);
+        color:var(--font-color-6);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container-fluid" id="main">   
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center project-name"> {{ project.name }} </h1>
+            <p>
+                {{ project.description }}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10">
+            <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid offset-1">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <H2 class="text-center my-3">Project Requirements</H2>
+            <ul class="list-group my-3">
+                {% for requirement in project.requirements %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-10">
+                            <p class="my-0">{{ requirement.description }}</p>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            <p>
+                <a href="/projects/add_requirements" class="btn primary"> Add Requirements </a>
+                <a href="/projects/edit_requirements" class="btn secondary"> Edit Requirements </a>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-12">            
+                <h2>TO DO List</h2>
+                {{ project.todo_list }}
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="d-flex justify-content-center">
+                <img src="{{project.user_flow.url}}" alt="user flw" class="img-fluid offset-1">
+            </div>
+        </div>
+    </div>
+    <div class="col-10 offset-1 offset-md-3 offset-lg-5">
+        <a href="/projects/{{project.id}}/edit" class="btn primary" id="edit"> Edit Project </a>
+        <a href="/projects/{{project.id}}/delete" class="btn secondary" id="delete"> Delete Project </a>
+    </div>
+</main>
+{% endblock %}
