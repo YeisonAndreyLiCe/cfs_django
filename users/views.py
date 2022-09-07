@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from .models import User
 from django.http import JsonResponse
 from projects.models import Project
+import os
+from projects.documents import OpenF
 
 # Create your views here.
 def projects(request, id):
@@ -25,7 +27,13 @@ def view_project(request, id_user, id_project):
     if 'user_id' not in request.session:
         return redirect('/login')
     #user = User.objects.get(id=request.session['user_id'])
+    project = Project.objects.get(id =id_project)
+    requirements = OpenF()
+    todo = OpenF()
+
     context = {
-        'project': Project.objects.get(id=id_project),
+        'project': project,
+        'requirements' : requirements.Open('requirements',project.requirements),
+        'to_dos' : todo.Open('ToDo',project.todo),
     }
     return render(request, 'view_user_project.html', context)

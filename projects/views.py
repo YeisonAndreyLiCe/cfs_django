@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from .models import Project
 from users.models import User
 import os
+from .documents import Requirement
+from .documents import ToDo
 
 """ from .forms import UploadFileForm """
 """ from django.core.files import File
@@ -14,6 +16,9 @@ from datetime import datetime """
 def projects_templates(request):
     if 'user_id' not in request.session:
         return redirect('/login')
+    path = os.path.join('projects', 'templates')
+        #os.makedirs(path)
+    print(path)
     return render(request, 'projects_templates.html')
 
 def new_project(request,id):
@@ -33,15 +38,20 @@ def create_project(request):
             print(data)
             return JsonResponse(data)
 
-        form = Project(request.POST, request.FILES)
-        print(form)
-        #if form.validator():
+        requirements = Requirement(request.POST['requirements'], request.session['user_id'])
+        todo = ToDo(request.POST['todo'], request.session['user_id'])
+        if requirements.validator():
+            requirements.save('requirements')
+        if todo.validator():
+            todo.save('ToDo')
         project = Project.objects.create(
             name = request.POST['name'],
             public_status = request.POST['public_status'],
             description = request.POST['description'],
             wireframe = request.FILES['wireframe'],
             user_flow_image = request.FILES['user_flow_image'],
+            requirements = requirements.name,
+            todo = todo.name,
             owner = User.objects.get(id=request.session['user_id'])
         )
         project.save()

@@ -19,7 +19,9 @@ class ProjectManager(models.Manager):
 class Project(models.Model):
     name = models.CharField(max_length=100)
     public_status = models.BooleanField(default=False)
-    description = models.CharField(max_length=1000)    
+    description = models.CharField(max_length=1000)
+    requirements = models.CharField(max_length=1000, null=True)   
+    todo = models.CharField(max_length=1000, null=True)
     wireframe = models.FileField(upload_to='wireframes/', blank=True, null=True)
     user_flow_image = models.ImageField(upload_to='user_flows/', blank=True, null=True)
     owner = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)

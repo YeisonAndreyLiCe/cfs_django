@@ -6,6 +6,11 @@
 <link rel="stylesheet" href="{% static 'css/projects_templates.css' %}">
 
 <style>
+    .list-group-item{
+        background-color:var(--primary-8);
+        color:var(--font-color-10);
+        border:1px solid var(--primary-10);
+    }
     .primary{
         background-color:var(--btn-primary);
         color:var(--font-color-10);
@@ -37,11 +42,11 @@
         <div class="col-12">
             <H2 class="text-center my-3">Project Requirements</H2>
             <ul class="list-group my-3">
-                {% for requirement in project.requirements %}
+                {% for requirement in requirements %}
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-10">
-                            <p class="my-0">{{ requirement.description }}</p>
+                            <p class="my-0">{{ requirement }}</p>
                         </div>
                     </div>
                 </li>
@@ -55,12 +60,19 @@
         <div class="row">
             <div class="col-12">            
                 <h2>TO DO List</h2>
-                {{ project.todo_list }}
+                {% for to_do in to_dos %}
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched">
+                        <label class="form-check-label stretched-link" for="thirdCheckboxStretched">{{to_do}}</label>
+                    </li>
+                </ul>
+                {% endfor %}
             </div>
         </div>
         <div class="row my-3">
             <div class="d-flex justify-content-center">
-                <img src="{{project.user_flow.url}}" alt="user flw" class="img-fluid offset-1">
+                <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid offset-1">
             </div>
         </div>
     </div>
