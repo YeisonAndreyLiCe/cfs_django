@@ -1,6 +1,7 @@
-$(window).ready(function() {
+jQuery(window).ready(function() {
     var form = document.getElementById('form');
-    var FetchTo = document.getElementById('fetchTo').innerHTML;
+    //var FetchTo = document.getElementById('fetchTo').innerHTML;
+    var FetchTo = form.getAttribute('action');
     form.onsubmit = function(e) {
         e.preventDefault();
         var formData = new FormData(form);

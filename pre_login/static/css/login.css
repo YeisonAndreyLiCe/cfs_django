@@ -13,7 +13,7 @@
     color:var(--font-color-6);
 }
 
-.input-group-text{
+.input-group-text input{
     background-color:gray;
     color:var(--font-color-10);
 }

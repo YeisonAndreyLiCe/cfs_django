@@ -10,10 +10,13 @@ from projects.documents import OpenF
 def projects(request, id):
     if 'user_id' not in request.session:
         return redirect('/login')
+    projects = Project.objects.filter(owner=request.session['user_id'])
     context = {
         'user': User.objects.get(id=request.session['user_id']),
-        'projects': Project.objects.filter(owner=request.session['user_id']),
+        'projects': projects,
+        'indexes': [i for i in range(len(projects))],
     }
+    print(context['indexes'])
     return render(request, 'user_projects.html', context)  
     #return render(request, 'create_project.html')
 

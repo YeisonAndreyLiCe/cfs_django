@@ -27,6 +27,8 @@
 }
 
 body{
+    height: 100%;
+    position: relative;
     background-color:var(--body);
 }
 
@@ -52,7 +54,6 @@ header .navbar .navbar-brand, header .navbar .navbar-nav .nav-link, header .navb
     border-radius: 15px 15px 15px 15px;
 
 }
-
 
 .switch {
     background:var(--primary-10);
@@ -103,14 +104,11 @@ header .navbar .navbar-brand, header .navbar .navbar-nav .nav-link, header .navb
 }
 
 main{
-    margin-top: 100px;
+    margin: 50px 0px 100px 0px;
     color: var(--font-color-10);
 }
 
-/* .footer {
-    position: unset;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1030;
-} */
+#footer {
+    background-color: var(--primary-8);
+    color: var(--font-color-6);
+}

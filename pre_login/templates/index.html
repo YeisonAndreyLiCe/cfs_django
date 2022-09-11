@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
 {% block title %} cfs|homepage {% endblock %}
 
-{% block css %}
-{{ block.super }}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
-{% endblock %}
-
 {% block content %}
 <main id="main">
     <header class="d-flex justify-content-center">
@@ -59,7 +53,7 @@
     </div>
 </main>
 {% endblock %}
-
-{% block js %}
+    
+{% block footer %}
 {{ block.super }}
-{% endblock %}
+{% endblock %} 
