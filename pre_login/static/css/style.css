@@ -27,9 +27,10 @@
 }
 
 body{
-    height: 100%;
     position: relative;
     background-color:var(--body);
+    padding-bottom:5rem;
+    min-height: 100vh;
 }
 
 header .navbar .navbar-brand, header .navbar .navbar-nav .nav-link, header .navbar .navbar-toggler-icon{ 
@@ -104,11 +105,15 @@ header .navbar .navbar-brand, header .navbar .navbar-nav .nav-link, header .navb
 }
 
 main{
-    margin: 50px 0px 100px 0px;
+    /* margin: 50px 0px 100px 0px; */
     color: var(--font-color-10);
 }
 
 #footer {
     background-color: var(--primary-8);
     color: var(--font-color-6);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 2.5rem;
 }

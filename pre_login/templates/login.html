@@ -9,7 +9,13 @@
 {% endblock %}
 
 {% block content %}
-<p id="fetchTo" style="visibility:hidden;">/login_user/</p>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 col-md-9 col-lg-6 offset-md-1 offset-lg-3">
+            <div id="alertMessage"></div>
+        </div>
+    </div>
+</div>
 <main class="container d-flex justify-content-center">
     <div class="form-group rounded p-3">
         <form action="/login_user/" method="POST" id="form">
@@ -33,13 +39,6 @@
         </form>
     </div>
 </main>
-<div class="container my-1">
-    <div class="row">
-        <div class="col-12 col-md-9 col-lg-6 offset-md-1 offset-lg-3">
-            <div id="alertMessage"></div>
-        </div>
-    </div>
-</div>
 {% endblock %}
 {% block js %}
 {{ block.super }}

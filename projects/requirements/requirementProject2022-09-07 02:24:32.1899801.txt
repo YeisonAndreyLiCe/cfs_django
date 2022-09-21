@@ -1,8 +1,8 @@
-Project Requirements
+
 *(1) Login y Registration with validation
-*(1) User can create objects in the database
-*(1) User can read or view objects retrieved from the database
-*(1) User can select any element as ‘likes’, ‘favorites’, ‘rsvp’, etc.
+*(1) User can create objects in the database- Completed 
+*(1) User can read or view objects retrieved from the database- Completed 
+*(1) User can select any element as ‘likes’, ‘favorites’, ‘rsvp’, etc.- Completed 
 *(1) Use of the Flask framework
 *(1) User can edit their profile or data published
 *(1) User can delete their profile or data published

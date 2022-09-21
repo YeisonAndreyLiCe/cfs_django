@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/projects_templates.css' %}">
 
 <style>
-    .list-group-item{
+    .artefact{
         background-color:var(--primary-8);
         color:var(--font-color-10);
         border:1px solid var(--primary-10);
@@ -20,14 +20,18 @@
         background-color:var(--btn-secondary);
         color:var(--font-color-6);
     }
+    .done{
+        background-color:var(--primary-8-alpha);
+        color:var(--font-color-6);
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<main class="container-fluid" id="main">   
+<main class="container-fluid my-5" id="main">   
     <div class="row">
-        <div class="col-12">
-            <h1 class="text-center project-name"> {{ project.name }} </h1>
+        <div class="col-10 offset-1">
+            <h1 class="text-center project-name text-info"> {{ project.name }} </h1>
             <p>
                 {{ project.description }}
             </p>
@@ -35,7 +39,9 @@
     </div>
     <div class="row">
         <div class="col-10">
-            <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid offset-1">
+            {% if project.wireframe != '' %}
+                <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid offset-1">
+            {% endif %}
         </div>
     </div>
     <div class="row">
@@ -43,18 +49,60 @@
             <H2 class="text-center my-3">Project Requirements</H2>
             <ul class="list-group my-3">
                 {% for requirement in requirements %}
-                <li class="list-group-item">
+                <li class="list-group-item artefact" id="description-{{requirement.id}}">
                     <div class="row">
-                        <div class="col-10">
-                            <p class="my-0">{{ requirement }}</p>
+                        <div class="col-9">
+                            <p class="my-0">{{ requirement.description }}</p>
                         </div>
+                        {% if requirement.id != 'error' %}
+                        <div class="col-2">
+                            <form action="{% url 'requirement_completed'  %}" id="form-{{requirement.id}}" class="form" method="POST">
+                                {% if requirement.complete %}
+                                <script>
+                                    document.getElementById("form-{{requirement.id}}").action = "{% url 'requirement_uncompleted' %}";
+                                    document.getElementById("description-{{requirement.id}}").classList.remove("artefact");
+                                    document.getElementById("description-{{requirement.id}}").classList.add("done");
+                                </script>
+                                {% endif %}
+                                {% csrf_token %}
+                                <input type="hidden" name="id_project" value="{{project.id}}">
+                                <input type="hidden" name="id_requirement" value="{{requirement.id}}">
+                                <button type="submit" class="btn btn-block {{ requirement.complete|yesno:'secondary, primary' }} btn-sm">{{ requirement.complete|yesno:'Completed,Not Completed' }}</button>
+                            </form>
+                        </div>
+                        <div class="col-1">
+                            <form action="{% url 'delete_requirement' %}" class="form" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_project" value="{{project.id}}">
+                                <input type="hidden" name="id_requirement" value="{{requirement.id}}">
+                                <button type="submit" class="btn btn-block btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                        {% endif %}
                     </div>
                 </li>
                 {% endfor %}
             </ul>
+            <div id="formAddRequirements"></div>
             <p>
-                <a href="/projects/add_requirements" class="btn primary"> Add Requirements </a>
-                <a href="/projects/edit_requirements" class="btn secondary"> Edit Requirements </a>
+                <a href="#" class="btn primary" id="addRequirements"> Add Requirements </a>
+                <script>
+                    document.getElementById("addRequirements").addEventListener("click", function(){
+                        document.getElementById("formAddRequirements").innerHTML = `
+                        <form action="{% url 'add_requirements' %}" method="POST" class="form">
+                            {% csrf_token %}
+                            <input type="hidden" name="id_project" value="{{project.id}}">
+                            <input type="hidden" name="user_id" value="{{request.session.user_id}}">
+                            <div class="form-group">
+                                <label for="new_requirements">New Requirements</label>
+                                <textarea name="new_requirements" class="form-control" id="new_requirements" rows="3" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
+                            </div>
+                            <button type="submit" class="btn primary my-2">Add</button>
+                        </form>
+                        `;
+                        document.getElementById("addRequirements").remove();
+                    });
+                </script>
             </p>
         </div>
         <div class="row">
@@ -62,9 +110,9 @@
                 <h2>TO DO List</h2>
                 {% for to_do in to_dos %}
                 <ul class="list-group">
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched">
-                        <label class="form-check-label stretched-link" for="thirdCheckboxStretched">{{to_do}}</label>
+                    <li class="list-group-item artefact">
+                        <input class="form-check-input me-1" type="checkbox" id="Checkbox-{{to_do.id}}" checked = {{to_do.complete|yesno:'true,false'}}>
+                        <label class="form-check-label stretched-link" for="Checkbox-{{to_do.id}}">{{to_do.description}}</label>
                     </li>
                 </ul>
                 {% endfor %}
@@ -72,7 +120,9 @@
         </div>
         <div class="row my-3">
             <div class="d-flex justify-content-center">
-                <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid offset-1">
+                {% if project.user_flow_image != '' %}
+                    <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid offset-1">
+                {% endif %}
             </div>
         </div>
     </div>
@@ -81,4 +131,9 @@
         <a href="/projects/{{project.id}}/delete" class="btn secondary" id="delete"> Delete Project </a>
     </div>
 </main>
+{% endblock %}
+{% block js %}
+{{ block.super }}
+<script src="{% static 'js/requirements.js'%}"></script>
+<script src="{% static 'js/create_project.js'%}"></script>
 {% endblock %}

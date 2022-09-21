@@ -1,10 +1,11 @@
 #from multiprocessing import context
+from tabnanny import check
 from django.shortcuts import render, redirect
 from .models import User
 from django.http import JsonResponse
 from projects.models import Project
 import os
-from projects.documents import OpenF
+from projects.documents import File, Artefact
 
 # Create your views here.
 def projects(request, id):
@@ -16,7 +17,6 @@ def projects(request, id):
         'projects': projects,
         'indexes': [i for i in range(len(projects))],
     }
-    print(context['indexes'])
     return render(request, 'user_projects.html', context)  
     #return render(request, 'create_project.html')
 
@@ -31,12 +31,13 @@ def view_project(request, id_user, id_project):
         return redirect('/login')
     #user = User.objects.get(id=request.session['user_id'])
     project = Project.objects.get(id =id_project)
-    requirements = OpenF()
-    todo = OpenF()
-
+    requirements = File()
+    todo = File()
+    requirements = requirements.openFile('requirements',project.requirements)
+    to_dos = todo.openFile('ToDo',project.todo)
     context = {
         'project': project,
-        'requirements' : requirements.Open('requirements',project.requirements),
-        'to_dos' : todo.Open('ToDo',project.todo),
+        'requirements' : [Artefact(key, value) for key, value in requirements.items()],
+        'to_dos' : [Artefact(key, value) for key, value in to_dos.items()],
     }
     return render(request, 'view_user_project.html', context)

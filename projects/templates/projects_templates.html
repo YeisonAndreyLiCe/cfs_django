@@ -5,21 +5,29 @@
 {{ block.super }}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/projects_templates.css' %}">
+<style>
+    .img-template{
+        background-color: var(--primary-8);
+    }
+    .img-template .row .img-item{
+        background-color: var(--primary-10);
+        border-radius: 10px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-    <main class="container-fluid">   
+    <main class="container-fluid my-5">   
         <div class="project-container row " >
             <div class="project-img offset-md-1 col-md-10 col-lg-5">
-                <a href="/users/new_user_project">
-                    <img src="{% static 'images/img.jpg' %}" alt="image">
+                <a href="/users/new_user_project" class="nav-link">
+                    <img src="{% static 'images/pexels-picjumbocom-196644.jpg' %}" alt="image">
                 </a>
             </div>
             <div class="project-info offset-md-1 col-md-10 col-lg-6">
-                <p class="text-white-50">project features</p>
-                <h1 class="text-info align-end"> <a href="/users/new_user_project" class="nav-link">Project Name</a></h1>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus autem distinctio laborum praesentium vel. Dolores qui at quibusdam iure, placeat excepturi vero temporibus quae odio rerum laudantium tenetur saepe sit!
-                <p>bay</p>
+                <p class="text-white-50">Agile methodology</p>
+                <h1 class="text-info align-end"> <a href="/users/new_user_project" class="nav-link">SCRUM Template</a></h1>
+                Framework defined by Ken Schwaber & Jeff Sutherland, It is a framework for developing, delivering, and sustaining complex products.It aims to help teams work together more effectively, and to deliver products that meet customer needs and expectations.
             </div>
         </div>
         <div class="project-container row " >

@@ -1,43 +1,78 @@
 import os
 from datetime import datetime
+from traceback import print_stack
 
-class Requirement:
-    def __init__(self, description, user_id):
-        self.name = f"requirementProject{datetime.now()}{user_id}"
-        self.description = description
+def replace_special_chars(string):
+    return string.replace(" ", "").replace(":", "_").replace(".", "-")
 
-    def save(self, fileClass):
+# this class is used to represent a document in the project it could be a file or a TODO item or a list of requirements
+
+class File:
+    def __init__(self):
+        self.name = ""
+        self.content = ""
+        self.lines = []
+        self.id_lines = {}
+    
+    def save(self, content ,fileClass, user_id):
+        self.name = f"{replace_special_chars(str(datetime.now()))}{user_id}" # we use the date and the user id to create a unique name for the file
         path = os.path.join("projects", fileClass, self.name)
         with open(f"{path}.txt", "w") as destination:
-            destination.write(self.description)
+            self.content = content
+            destination.write(content)
+        return self
 
-    def validator(self):
-        if self.description == "":
+    def validator(self, content):
+        if content == "":
             return False
         return True
+    
+    def openFile(self,fileClass, name):
+        try:
+            path = os.path.join("projects",fileClass, name)
+            with open(f'{path}.txt', "r") as destination:
+                self.lines = (destination.readlines())
+                for i in range(len(self.lines)):
+                    if self.lines[i].strip() != "":
+                        self.id_lines[i] = self.lines[i]# creating a dictionary with an id for each line to be used in the html
+                        self.content += self.lines[i].lstrip() if i == 0 else self.lines[i]               
+            return self.id_lines
+        except:
+            return {'error': f'there is no {fileClass} in this project'}
 
-class ToDo:
-    def __init__(self, description, user_id):
-        self.name = f"requirementProject{datetime.now()}{user_id}"
-        self.description = description
-
-    def save(self, fileClass):
-        path = os.path.join("projects", fileClass, self.name)
+    def update(self, content ,fileClass, name):
+        path = os.path.join("projects", fileClass, name)
         with open(f"{path}.txt", "w") as destination:
-            destination.write(self.description)
+            self.content = content.strip()
+            destination.write(content)
+        return self.openFile(fileClass, name)
 
-    def validator(self):
-        if self.description == "":
-            return False
-        return True
+    def addLines(self, content, fileClass, name, user_id):
+        try: 
+            path = os.path.join("projects", fileClass, name)
+            with open(f"{path}.txt", "a") as destination:
+                self.content = content
+                destination.write(content)
+            return self.openFile(fileClass, name)
+        except:
+            self.save(content, fileClass, user_id)
 
-class OpenF:
-    list = []
-    
-    def Open(cls, fileClass, filename):
-        path = os.path.join("projects",fileClass, filename)
-        #path = os.path.join('projects', 'requirements', str(filename))
-        with open(f'{path}.txt', "r") as destination:
-            cls.list.append(destination.read())
-        return cls.list
-    
+    def deleteLine(self, line_id, fileClass, name):
+        path = os.path.join("projects", fileClass, name)
+        with open(f"{path}.txt", "w") as destination:
+            self.lines.pop(line_id)
+            self.content = "".join(self.lines)
+            destination.write(self.content)
+        return self.openFile(fileClass, name)
+
+class Artefact:
+    def __init__(self, id ,description):
+        self.id = id
+        self.description = description
+        self.completed = False
+
+    def complete(self):
+        if '- Completed' in self.description:
+            self.completed = True
+            #self.description = self.description.replace("- Completed", "")
+        return self.completed

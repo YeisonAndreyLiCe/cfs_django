@@ -101,7 +101,11 @@
             <div class="project-container" >
                 <div class="project-img">
                     <a href="/users/{{user.id}}/view_project/{{projects.id}}">
-                        <img src="{{project.wireframe.url}}" alt="wireframe project">
+                        {% if project.wireframe %}
+                            <img src="{{ project.wireframe.url }}" alt="project image" class="img-fluid">
+                        {% else %}
+                            <img src="{% static 'images/pexels-picjumbocom-196644.jpg' %}" alt="template image" class="img-fluid">
+                        {% endif %}
                     </a>
                 </div>
                 <div class="project-info">
