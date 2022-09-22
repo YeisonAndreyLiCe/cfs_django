@@ -1,2 +1,0 @@
-Enviar datos del formulario
-Como ya ha visto, obtener información de un usuario a través de formularios es una parte extremadamente importante del desarrollo web. Si bien los formularios se pueden enviar como solicitudes GET o POST, generalmente los usaremos para enviar solicitudes POST. Donde en Flask accedimos a los datos en nuestro controlador request.form, en Django ahora lo utilizaremos request.POSTpara acceder a cualquier información de formulario que se envíe. (Si el formulario es una solicitud GET, se puede acceder a esos datos request.GET).

@@ -1,3 +1,4 @@
+from curses import use_default_colors
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Project
@@ -21,7 +22,6 @@ def new_project(request,id):
     return render(request, 'new_project.html')
 
 def create_project(request):
-    print(request.FILES)
     if 'user_id' not in request.session:
         return redirect('/login')
     if request.method == "POST":
@@ -57,7 +57,6 @@ def create_project(request):
         )
         project.save()
         route = '/users/'+str(request.session['user_id'])+'/view_project/'+str(project.id)
-        print(JsonResponse({'route': route}))
         return JsonResponse({'route': route})
             
     return redirect('/users/new_user_project')
@@ -92,13 +91,13 @@ def update(request, id):
         project.name = request.POST['name']
         project.public_status = request.POST['public_status']
         project.description = request.POST['description']
-        project.save()
         requirements = File()
         if requirements.validator(request.POST['requirements']):
-            requirements.update(request.POST['requirements'],'requirements',project.requirements)
+            project.requirements = requirements.update(request.POST['requirements'],'requirements',project.requirements, request.session['user_id'])
         todo = File()
         if todo.validator(request.POST['todo']):
-            todo.update(request.POST['todo'],'ToDo', project.todo)
+            project.todo = todo.update(request.POST['todo'],'ToDo', project.todo, request.session['user_id'])
+        project.save()
         #project.wireframe = request.FILES['wireframe']
         #project.user_flow_image = request.FILES['user_flow_image']
         route = f"/users/{request.session['user_id']}/view_project/{project.id}"
@@ -109,6 +108,17 @@ def delete(request, id):
     if 'user_id' not in request.session:
         return redirect('/login')
     project = Project.objects.get(id=id)
+    file = File()
+    file.deleteFile('requirements',project.requirements)
+    file.deleteFile('ToDo',project.todo)
+    try:
+        os.remove(project.wireframe.path)
+    except ValueError:
+        pass
+    try:
+        os.remove(project.user_flow_image.path)
+    except ValueError:
+        pass
     project.delete()
     return redirect(f"/users/{request.session['user_id']}/projects")
 
@@ -117,11 +127,11 @@ def requirement_completed(request):
         return redirect('/login')
     project = Project.objects.get(id=request.POST['id_project'])
     requirements = File()
-    info = requirements.openFile('requirements',project.requirements)
+    requirements.openFile('requirements',project.requirements)
     lines = requirements.lines
     lines[int(request.POST['id_requirement'])] = lines[int(request.POST['id_requirement'])].strip() + "- Completed \n"
     new_lines = ("").join(lines)
-    requirements.update(new_lines,'requirements', project.requirements)
+    requirements.update(new_lines,'requirements', project.requirements, request.session['user_id'])
     return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
 
 def requirement_uncompleted(request):
@@ -129,11 +139,11 @@ def requirement_uncompleted(request):
         return redirect('/login')
     project = Project.objects.get(id=request.POST['id_project'])
     requirements = File()
-    info = requirements.openFile('requirements',project.requirements)
+    requirements.openFile('requirements',project.requirements)
     lines = requirements.lines
     lines[int(request.POST['id_requirement'])] = lines[int(request.POST['id_requirement'])].replace("- Completed \n", "\n")
     new_lines = ("").join(lines)
-    requirements.update(new_lines,'requirements', project.requirements)
+    requirements.update(new_lines,'requirements', project.requirements, request.session['user_id'])
     return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
 
 def add_requirements(request):
@@ -141,8 +151,10 @@ def add_requirements(request):
         return redirect('/login')
     project = Project.objects.get(id=request.POST['id_project'])
     requirements = File()
-    info = requirements.openFile('requirements',project.requirements)
-    requirements.addLines(request.POST['new_requirements'],'requirements', project.requirements, request.POST['user_id'])
+    if requirements.validator(request.POST['new_requirements']):
+        requirements.openFile('requirements',project.requirements)        
+        project.requirements = requirements.addLines(request.POST['new_requirements'],'requirements', project.requirements, request.POST['user_id'])
+        project.save()
     return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
     #return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
 
@@ -154,3 +166,89 @@ def delete_requirement(request):
     info = requirements.openFile('requirements',project.requirements)
     requirements.deleteLine(int(request.POST['id_requirement']),'requirements', project.requirements)
     return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+
+def add_todo_task(request):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=request.POST['id_project'])
+    todo = File()
+    if todo.validator(request.POST['new_tasks']):
+        todo.openFile('ToDo',project.todo)
+        project.todo = todo.addLines(request.POST['new_tasks'],'ToDo', project.todo, request.POST['user_id'])
+        project.save()
+    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
+    #return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+
+def delete_todo_task(request):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=request.POST['id_project'])
+    todo = File()
+    info = todo.openFile('ToDo',project.todo)
+    todo.deleteLine(int(request.POST['id_task']),'ToDo', project.todo)
+    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+
+def todo_task_completed(request):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=request.POST['id_project'])
+    todo = File()
+    info = todo.openFile('ToDo',project.todo)
+    lines = todo.lines
+    lines[int(request.POST['id_task'])] = lines[int(request.POST['id_task'])].strip() + "- Completed \n"
+    new_lines = ("").join(lines)
+    todo.update(new_lines,'ToDo', project.todo, request.session['user_id'])
+    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+
+def todo_task_uncompleted(request):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=request.POST['id_project'])
+    todo = File()
+    todo.openFile('ToDo',project.todo)
+    lines = todo.lines
+    lines[int(request.POST['id_task'])] = lines[int(request.POST['id_task'])].replace("- Completed \n", "\n")
+    new_lines = ("").join(lines)
+    todo.update(new_lines,'ToDo', project.todo, request.session['user_id'])
+    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+
+def add_user_flow_image(request):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=request.POST['id_project'])
+    try:
+        project.user_flow_image = request.FILES['user_flow_image']
+        project.save()
+    except:
+        pass
+    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
+    #return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+
+def delete_user_flow_image(request, id):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=id)
+    os.remove(project.user_flow_image.path)
+    project.user_flow_image = ""
+    project.save()
+    return redirect(f"/users/{request.session['user_id']}/view_project/{id}")
+
+def add_wireframe(request, id):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=id)
+    try:
+        project.wireframe = request.FILES['wireframe']
+        project.save()
+    except:
+        pass
+    return redirect(f"/users/{request.session['user_id']}/view_project/{id}")
+
+def delete_wireframe(request, id):
+    if 'user_id' not in request.session:
+        return redirect('/login')
+    project = Project.objects.get(id=id)
+    os.remove(project.wireframe.path)
+    project.wireframe = ""
+    project.save()
+    return redirect(f"/users/{request.session['user_id']}/view_project/{id}")

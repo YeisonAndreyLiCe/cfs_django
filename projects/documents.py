@@ -15,6 +15,7 @@ class File:
         self.id_lines = {}
     
     def save(self, content ,fileClass, user_id):
+        content = content + "\n"
         self.name = f"{replace_special_chars(str(datetime.now()))}{user_id}" # we use the date and the user id to create a unique name for the file
         path = os.path.join("projects", fileClass, self.name)
         with open(f"{path}.txt", "w") as destination:
@@ -38,24 +39,30 @@ class File:
                         self.content += self.lines[i].lstrip() if i == 0 else self.lines[i]               
             return self.id_lines
         except:
-            return {'error': f'there is no {fileClass} in this project'}
+            return {'error': f'There is no {fileClass} in this project'}
 
-    def update(self, content ,fileClass, name):
-        path = os.path.join("projects", fileClass, name)
-        with open(f"{path}.txt", "w") as destination:
-            self.content = content.strip()
-            destination.write(content)
-        return self.openFile(fileClass, name)
-
-    def addLines(self, content, fileClass, name, user_id):
-        try: 
+    def update(self, content ,fileClass, name, user_id):
+        if name != "" and name != None:
             path = os.path.join("projects", fileClass, name)
-            with open(f"{path}.txt", "a") as destination:
+            with open(f"{path}.txt", "w") as destination:
                 self.content = content
                 destination.write(content)
-            return self.openFile(fileClass, name)
-        except:
+                self.openFile(fileClass, name)
+            return name
+        else:
             self.save(content, fileClass, user_id)
+            return self.name
+
+    def addLines(self, content, fileClass, name, user_id):
+        if name != "" and name != None: 
+            path = os.path.join("projects", fileClass, name)
+            with open(f"{path}.txt", "a") as destination:
+                destination.write("\n" + content)
+                self.openFile(fileClass, name)
+            return name
+        else:
+            self.save(content, fileClass, user_id)
+            return self.name
 
     def deleteLine(self, line_id, fileClass, name):
         path = os.path.join("projects", fileClass, name)
@@ -64,6 +71,14 @@ class File:
             self.content = "".join(self.lines)
             destination.write(self.content)
         return self.openFile(fileClass, name)
+
+    def deleteFile(self, fileClass, name):
+        try:
+            path = os.path.join("projects", fileClass, name)
+            os.remove(f"{path}.txt")
+            return True
+        except:
+            return False
 
 class Artefact:
     def __init__(self, id ,description):

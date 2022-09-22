@@ -4,7 +4,6 @@
 {{ block.super }}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/projects_templates.css' %}">
-
 <style>
     .artefact{
         background-color:var(--primary-8);
@@ -24,9 +23,13 @@
         background-color:var(--primary-8-alpha);
         color:var(--font-color-6);
     }
+    .task-done{
+        background-color:var(--primary-8-alpha);
+        color:var(--font-color-6);
+        text-decoration: line-through;
+    }
 </style>
 {% endblock %}
-
 {% block content %}
 <main class="container-fluid my-5" id="main">   
     <div class="row">
@@ -38,16 +41,36 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-10">
+        <div class="col-10 offset-1">
             {% if project.wireframe != '' %}
-                <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid offset-1">
+                <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid">
+                <div>
+                    <a href="{% url 'delete_wireframe' id=project.id %}" class="btn btn-danger">Delete Wireframe</a>
+                </div>
+            {% else %}
+                <div id="projectWireframe">
+                    <button id="addWireframe" class="btn primary">Add Wireframe</button>
+                </div>
+                <script>
+                    document.getElementById('addWireframe').addEventListener('click', function(e){
+                        e.preventDefault();
+                        document.getElementById('projectWireframe').innerHTML = `
+                            <form action="{% url 'add_wireframe' id=project.id %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <label for="wireframe" class="fw-bold">User Flow Image</label>
+                                <input type="file" name="wireframe" id="wireframe">
+                                <input type="submit" value="Add Wireframe" class="btn primary">
+                            </form>
+                        `;
+                    });
+                </script>
             {% endif %}
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <H2 class="text-center my-3">Project Requirements</H2>
-            <ul class="list-group my-3">
+            <ul class="list-group my-2">
                 {% for requirement in requirements %}
                 <li class="list-group-item artefact" id="description-{{requirement.id}}">
                     <div class="row">
@@ -56,7 +79,7 @@
                         </div>
                         {% if requirement.id != 'error' %}
                         <div class="col-2">
-                            <form action="{% url 'requirement_completed'  %}" id="form-{{requirement.id}}" class="form" method="POST">
+                            <form action="{% url 'requirement_completed'  %}" id="form-{{requirement.id}}" method="POST">
                                 {% if requirement.complete %}
                                 <script>
                                     document.getElementById("form-{{requirement.id}}").action = "{% url 'requirement_uncompleted' %}";
@@ -71,7 +94,7 @@
                             </form>
                         </div>
                         <div class="col-1">
-                            <form action="{% url 'delete_requirement' %}" class="form" method="POST">
+                            <form action="{% url 'delete_requirement' %}" id="delete-{{requirement.id}}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="id_project" value="{{project.id}}">
                                 <input type="hidden" name="id_requirement" value="{{requirement.id}}">
@@ -87,7 +110,8 @@
             <p>
                 <a href="#" class="btn primary" id="addRequirements"> Add Requirements </a>
                 <script>
-                    document.getElementById("addRequirements").addEventListener("click", function(){
+                    document.getElementById("addRequirements").addEventListener("click", function(e){
+                        e.preventDefault();
                         document.getElementById("formAddRequirements").innerHTML = `
                         <form action="{% url 'add_requirements' %}" method="POST" class="form">
                             {% csrf_token %}
@@ -97,7 +121,7 @@
                                 <label for="new_requirements">New Requirements</label>
                                 <textarea name="new_requirements" class="form-control" id="new_requirements" rows="3" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
                             </div>
-                            <button type="submit" class="btn primary my-2">Add</button>
+                            <input type="submit" value="Add" class="btn primary my-2">
                         </form>
                         `;
                         document.getElementById("addRequirements").remove();
@@ -106,22 +130,93 @@
             </p>
         </div>
         <div class="row">
-            <div class="col-12">            
-                <h2>TO DO List</h2>
-                {% for to_do in to_dos %}
+            <div class="col-12">
+                <h2 class="text-center">TO DO List</h2>
                 <ul class="list-group">
+                    {% for todo in to_dos %}
                     <li class="list-group-item artefact">
-                        <input class="form-check-input me-1" type="checkbox" id="Checkbox-{{to_do.id}}" checked = {{to_do.complete|yesno:'true,false'}}>
-                        <label class="form-check-label stretched-link" for="Checkbox-{{to_do.id}}">{{to_do.description}}</label>
+                        <div class="row">
+                            <div class="col-9">
+                                <p class="my-0" id="descriptionTask-{{todo.id}}">{{ todo.description }}</p>
+                            </div>
+                            {% if todo.id != 'error' %}
+                            <div class="col-2">
+                                <form action="{% url 'todo_task_completed'  %}" id="formTask-{{todo.id}}" method="POST">
+                                    {% if todo.complete %}
+                                    <script>
+                                        document.getElementById("formTask-{{todo.id}}").action = "{% url 'todo_task_uncompleted' %}";
+                                        document.getElementById("descriptionTask-{{todo.id}}").classList.remove("artefact");
+                                        document.getElementById("descriptionTask-{{todo.id}}").classList.add("task-done");
+                                    </script>
+                                    {% endif %}
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_project" value="{{project.id}}">
+                                    <input type="hidden" name="id_task" value="{{todo.id}}">
+                                    <button type="submit" class="btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</button>
+                                </form>
+                            </div>
+                            <div class="col-1">
+                                <form action="{% url 'delete_todo_task' %}" id="delete-{{todo.id}}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_project" value="{{project.id}}">
+                                    <input type="hidden" name="id_task" value="{{todo.id}}">
+                                    <button type="submit" class="btn btn-block btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                            {% endif %}
+                        </div>
                     </li>
+                    {% endfor %}
                 </ul>
-                {% endfor %}
-            </div>
+            </div>           
         </div>
+        <div id="formAddTasks"></div>
+        <p>
+            <a href="#" class="btn primary my-2" id="addTasks"> Add Tasks </a>
+            <script>
+                document.getElementById("addTasks").addEventListener("click", function(e){
+                    e.preventDefault();
+                    document.getElementById("formAddTasks").innerHTML = `
+                    <form action="{% url 'add_todo_task' %}" method="POST" id="formAddRequirements">
+                        {% csrf_token %}
+                        <input type="hidden" name="id_project" value="{{project.id}}">
+                        <input type="hidden" name="user_id" value="{{request.session.user_id}}">
+                        <div class="form-group">
+                            <label for="new_requirements">New Requirements</label>
+                            <textarea name="new_tasks" class="form-control" id="new_tasks" rows="3" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
+                        </div>
+                        <button type="submit" class="btn primary my-2">Add</button>
+                    </form>
+                    `;
+                    document.getElementById("addTasks").remove();
+                });
+            </script>
+        </p>
         <div class="row my-3">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex flex-column align-items-center">
                 {% if project.user_flow_image != '' %}
-                    <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid offset-1">
+                    <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid">
+                    <div>
+                        <a href="{% url 'delete_user_flow_image' id=project.id %}" class="btn secondary"> Delete Image</a>
+                    </div>
+                {% else %}
+                    <div id="userFlowImage">
+                        <a href="#" id="addUserFlowImage" class="btn secondary">Add User Flow Image</a>
+                        <script>
+                            document.getElementById("addUserFlowImage").addEventListener("click", function(e){
+                                e.preventDefault();
+                                document.getElementById("userFlowImage").innerHTML = `
+                                <form action="{% url 'add_user_flow_image' %}" method="POST" class="form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id_project" value="{{project.id}}">
+                                    <label for="user_flow_image fw-bold">User Flow Image</label>
+                                    <input type="file" name="user_flow_image" class="form-control-file" id="user_flow_image">
+                                    <input type="submit" value="Add" class="btn primary">
+                                </form>
+                                `;
+                            });
+                        </script>
+                    </div>
                 {% endif %}
             </div>
         </div>
@@ -134,6 +229,5 @@
 {% endblock %}
 {% block js %}
 {{ block.super }}
-<script src="{% static 'js/requirements.js'%}"></script>
 <script src="{% static 'js/create_project.js'%}"></script>
 {% endblock %}
