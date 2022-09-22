@@ -73,13 +73,13 @@
             <ul class="list-group my-2">
                 {% for requirement in requirements %}
                 <li class="list-group-item artefact" id="description-{{requirement.id}}">
-                    <div class="row">
-                        <div class="col-9">
-                            <p class="my-0">{{ requirement.description }}</p>
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div>
+                            <p class="ml-2">{{ requirement.description }}</p>
                         </div>
                         {% if requirement.id != 'error' %}
-                        <div class="col-2">
-                            <form action="{% url 'requirement_completed'  %}" id="form-{{requirement.id}}" method="POST">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <form action="{% url 'requirement_completed' %}" id="form-{{requirement.id}}" method="POST" class="m-1">
                                 {% if requirement.complete %}
                                 <script>
                                     document.getElementById("form-{{requirement.id}}").action = "{% url 'requirement_uncompleted' %}";
@@ -92,9 +92,7 @@
                                 <input type="hidden" name="id_requirement" value="{{requirement.id}}">
                                 <button type="submit" class="btn btn-block {{ requirement.complete|yesno:'secondary, primary' }} btn-sm">{{ requirement.complete|yesno:'Completed,Not Completed' }}</button>
                             </form>
-                        </div>
-                        <div class="col-1">
-                            <form action="{% url 'delete_requirement' %}" id="delete-{{requirement.id}}" method="POST">
+                            <form action="{% url 'delete_requirement' %}" id="delete-{{requirement.id}}" method="POST" class="m-1">
                                 {% csrf_token %}
                                 <input type="hidden" name="id_project" value="{{project.id}}">
                                 <input type="hidden" name="id_requirement" value="{{requirement.id}}">
@@ -135,13 +133,13 @@
                 <ul class="list-group">
                     {% for todo in to_dos %}
                     <li class="list-group-item artefact">
-                        <div class="row">
-                            <div class="col-9">
-                                <p class="my-0" id="descriptionTask-{{todo.id}}">{{ todo.description }}</p>
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div>
+                                <p class="ml-2" id="descriptionTask-{{todo.id}}">{{ todo.description }}</p>
                             </div>
                             {% if todo.id != 'error' %}
-                            <div class="col-2">
-                                <form action="{% url 'todo_task_completed'  %}" id="formTask-{{todo.id}}" method="POST">
+                            <div class="d-flex flex-wrap justify-content-between">
+                                <form action="{% url 'todo_task_completed' %}" id="formTask-{{todo.id}}" method="POST" class="m-1">
                                     {% if todo.complete %}
                                     <script>
                                         document.getElementById("formTask-{{todo.id}}").action = "{% url 'todo_task_uncompleted' %}";
@@ -154,9 +152,7 @@
                                     <input type="hidden" name="id_task" value="{{todo.id}}">
                                     <button type="submit" class="btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</button>
                                 </form>
-                            </div>
-                            <div class="col-1">
-                                <form action="{% url 'delete_todo_task' %}" id="delete-{{todo.id}}" method="POST">
+                                <form action="{% url 'delete_todo_task' %}" id="delete-{{todo.id}}" method="POST" class="m-1">
                                     {% csrf_token %}
                                     <input type="hidden" name="id_project" value="{{project.id}}">
                                     <input type="hidden" name="id_task" value="{{todo.id}}">
@@ -193,11 +189,11 @@
             </script>
         </p>
         <div class="row my-3">
-            <div class="d-flex flex-column align-items-center">
+            <div class=" col-10 offset-1 d-flex flex-column align-items-center">
                 {% if project.user_flow_image != '' %}
                     <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid">
                     <div>
-                        <a href="{% url 'delete_user_flow_image' id=project.id %}" class="btn secondary"> Delete Image</a>
+                        <a href="{% url 'delete_user_flow_image' id=project.id %}" class="btn btn-danger my-2"> Delete Image</a>
                     </div>
                 {% else %}
                     <div id="userFlowImage">
@@ -223,7 +219,7 @@
     </div>
     <div class="col-10 offset-1 offset-md-3 offset-lg-5">
         <a href="/projects/{{project.id}}/edit" class="btn primary" id="edit"> Edit Project </a>
-        <a href="/projects/{{project.id}}/delete" class="btn secondary" id="delete"> Delete Project </a>
+        <a href="/projects/{{project.id}}/delete" class="btn btn-danger my-2" id="delete"> Delete Project </a>
     </div>
 </main>
 {% endblock %}

@@ -67,8 +67,8 @@ def edit(request, id):
     project = Project.objects.get(id =id)
     requirement = File()
     todo = File()
-    requirements = requirement.openFile('requirements',project.requirements)
-    to_dos = todo.openFile('ToDo',project.todo)
+    requirement.openFile('requirements',project.requirements)
+    todo.openFile('ToDo',project.todo)
     context = {
         'project': project,
         'requirements' : requirement.content,
@@ -132,7 +132,7 @@ def requirement_completed(request):
     lines[int(request.POST['id_requirement'])] = lines[int(request.POST['id_requirement'])].strip() + "- Completed \n"
     new_lines = ("").join(lines)
     requirements.update(new_lines,'requirements', project.requirements, request.session['user_id'])
-    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+    return redirect(f"/users/{request.session['user_id']}/view_project/{project.id}")
 
 def requirement_uncompleted(request):
     if 'user_id' not in request.session:
@@ -144,7 +144,7 @@ def requirement_uncompleted(request):
     lines[int(request.POST['id_requirement'])] = lines[int(request.POST['id_requirement'])].replace("- Completed \n", "\n")
     new_lines = ("").join(lines)
     requirements.update(new_lines,'requirements', project.requirements, request.session['user_id'])
-    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
 
 def add_requirements(request):
     if 'user_id' not in request.session:
@@ -156,8 +156,7 @@ def add_requirements(request):
         project.requirements = requirements.addLines(request.POST['new_requirements'],'requirements', project.requirements, request.POST['user_id'])
         project.save()
     return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
-    #return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
-
+    
 def delete_requirement(request):
     if 'user_id' not in request.session:
         return redirect('/login')
@@ -165,7 +164,7 @@ def delete_requirement(request):
     requirements = File()
     info = requirements.openFile('requirements',project.requirements)
     requirements.deleteLine(int(request.POST['id_requirement']),'requirements', project.requirements)
-    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
 
 def add_todo_task(request):
     if 'user_id' not in request.session:
@@ -177,7 +176,6 @@ def add_todo_task(request):
         project.todo = todo.addLines(request.POST['new_tasks'],'ToDo', project.todo, request.POST['user_id'])
         project.save()
     return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
-    #return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
 
 def delete_todo_task(request):
     if 'user_id' not in request.session:
@@ -186,7 +184,7 @@ def delete_todo_task(request):
     todo = File()
     info = todo.openFile('ToDo',project.todo)
     todo.deleteLine(int(request.POST['id_task']),'ToDo', project.todo)
-    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
 
 def todo_task_completed(request):
     if 'user_id' not in request.session:
@@ -198,7 +196,7 @@ def todo_task_completed(request):
     lines[int(request.POST['id_task'])] = lines[int(request.POST['id_task'])].strip() + "- Completed \n"
     new_lines = ("").join(lines)
     todo.update(new_lines,'ToDo', project.todo, request.session['user_id'])
-    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
 
 def todo_task_uncompleted(request):
     if 'user_id' not in request.session:
@@ -210,7 +208,8 @@ def todo_task_uncompleted(request):
     lines[int(request.POST['id_task'])] = lines[int(request.POST['id_task'])].replace("- Completed \n", "\n")
     new_lines = ("").join(lines)
     todo.update(new_lines,'ToDo', project.todo, request.session['user_id'])
-    return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
+    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
+    #return JsonResponse({"route": f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}"})
 
 def add_user_flow_image(request):
     if 'user_id' not in request.session:
