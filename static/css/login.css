@@ -3,7 +3,7 @@
     color: var(--font-color-10);
 }
 
-.primary{
+/* .primary{
     background-color:var(--btn-primary);
     color:var(--font-color-10);
 }
@@ -11,7 +11,7 @@
 .secondary{
     background-color:var(--btn-secondary);
     color:var(--font-color-6);
-}
+} */
 
 .input-group-text input{
     background-color:gray;
