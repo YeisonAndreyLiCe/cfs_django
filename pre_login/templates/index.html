@@ -53,7 +53,7 @@
         <p>
             This website uses cookies to ensure you get the best experience on our website.
         </p>
-        <form action="/accept_cookies" id="accept-cookies">
+        <form action="{% url 'get_api_key' %}" id="accept-cookies">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary">Accept</button>
         </form>

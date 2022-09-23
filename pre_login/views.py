@@ -4,8 +4,13 @@ from users.models import User
 #from django.contrib import messages
 import bcrypt
 from django.http import JsonResponse
+from .models import Cookie
 
 def index(request):
+    """ context = {
+        'cookies': Cookie.objects.all()
+    }
+    return render(request, 'index.html', context) """
     return render(request, 'index.html')
 
 def login(request):
@@ -43,6 +48,7 @@ def register_user(request):
         return redirect('/register')
 
 def login_user(request):
+    print(request.POST)
     if request.method == 'POST':
         user = User.objects.filter(email=request.POST['email'])
         if user:
@@ -55,4 +61,25 @@ def login_user(request):
                 return JsonResponse({'error': 'Invalid Password'})
         else:
             return JsonResponse({'error': "Invalid Email"})
+    return redirect('/register')
+
+def get_api_key(request):
+    print(request.POST)
+    if request.method == 'POST':
+        key = os.environ.get('IPSTACK_API_KEY')
+        print(key)
+        return JsonResponse({'key': key})
+    return redirect('/register')
+
+def set_cookies(request):
+    if request.method == 'POST':
+        if Cookie.validator(request.POST):
+            return JsonResponse({'error': 'Invalid Cookie'})
+        Cookie.objects.create(
+            ip = request.POST['ip'],
+            country = request.POST['country'],
+            city = request.POST['city'],
+        )
+        Cookie.save()
+        return JsonResponse({'success': 'success'})
     return redirect('/register')
