@@ -43,10 +43,12 @@
     <div class="row">
         <div class="col-10 offset-1">
             {% if project.wireframe != '' %}
+            <div class="d-flex flex-column align-items-center">
                 <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid">
                 <div>
-                    <a href="{% url 'delete_wireframe' id=project.id %}" class="btn btn-danger">Delete Wireframe</a>
+                    <a href="{% url 'delete_wireframe' id=project.id %}" class="btn btn-danger mt-2">Delete Wireframe</a>
                 </div>
+            </div>
             {% else %}
                 <div id="projectWireframe">
                     <button id="addWireframe" class="btn primary">Add Wireframe</button>
@@ -70,18 +72,21 @@
     <div class="row">
         <div class="col-12">
             <H2 class="text-center my-3">Project Requirements</H2>
-            <ul class="list-group my-2">
+            <ul class="list-group my-2" id="requirements-list">
                 {% for requirement in requirements %}
                 <li class="list-group-item artefact" id="description-{{requirement.id}}">
                     <div class="d-flex flex-wrap justify-content-between">
                         <div>
-                            <p class="ml-2">{{ requirement.description }}</p>
+                            <p class="ml-2" id="requirement-info-{{requirement.id}}">{{ requirement.description }}</p>
                         </div>
                         {% if requirement.id != 'error' %}
                         <div class="d-flex flex-wrap justify-content-between">
-                            <form action="{% url 'requirement_completed' %}" id="form-{{requirement.id}}" method="POST" class="m-1">
+                            <form action="{% url 'requirement_completed' %}" id="form-{{requirement.id}}" method="POST" class="form-update m-1">
                                 {% if requirement.complete %}
                                 <script>
+                                    document.getElementById("form-{{requirement.id}}").onsubmit = function(e){
+                                        e.preventDefault();
+                                    }
                                     document.getElementById("form-{{requirement.id}}").action = "{% url 'requirement_uncompleted' %}";
                                     document.getElementById("description-{{requirement.id}}").classList.remove("artefact");
                                     document.getElementById("description-{{requirement.id}}").classList.add("done");
@@ -90,7 +95,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="id_project" value="{{project.id}}">
                                 <input type="hidden" name="id_requirement" value="{{requirement.id}}">
-                                <button type="submit" class="btn btn-block {{ requirement.complete|yesno:'secondary, primary' }} btn-sm">{{ requirement.complete|yesno:'Completed,Not Completed' }}</button>
+                                <button type="submit" class="btn btn-block {{ requirement.complete|yesno:'secondary, primary' }} btn-sm" id="update-requirement-submit-{{requirement.id}}">{{ requirement.complete|yesno:'Completed,Not Completed' }}</button>
                             </form>
                             <form action="{% url 'delete_requirement' %}" id="delete-{{requirement.id}}" method="POST" class="m-1">
                                 {% csrf_token %}
@@ -106,12 +111,12 @@
             </ul>
             <div id="formAddRequirements"></div>
             <p>
-                <a href="#" class="btn primary" id="addRequirements"> Add Requirements </a>
+                <button class="btn primary" id="addRequirements"> Add Requirements </button>
                 <script>
-                    document.getElementById("addRequirements").addEventListener("click", function(e){
-                        e.preventDefault();
+                    document.getElementById("addRequirements").addEventListener("click", function(){
+                        document.getElementById("addRequirements").remove();
                         document.getElementById("formAddRequirements").innerHTML = `
-                        <form action="{% url 'add_requirements' %}" method="POST" class="form">
+                        <form action="{% url 'add_requirements' %}" method="POST" class="form" id="addRequirements">
                             {% csrf_token %}
                             <input type="hidden" name="id_project" value="{{project.id}}">
                             <input type="hidden" name="user_id" value="{{request.session.user_id}}">
@@ -122,7 +127,6 @@
                             <input type="submit" value="Add" class="btn primary my-2">
                         </form>
                         `;
-                        document.getElementById("addRequirements").remove();
                     });
                 </script>
             </p>
@@ -139,9 +143,12 @@
                             </div>
                             {% if todo.id != 'error' %}
                             <div class="d-flex flex-wrap justify-content-between">
-                                <form action="{% url 'todo_task_completed' %}" id="formTask-{{todo.id}}" method="POST" class="m-1">
+                                <form action="{% url 'todo_task_completed' %}" id="formTask-{{todo.id}}" method="POST" class="form-update m-1">
                                     {% if todo.complete %}
                                     <script>
+                                        document.getElementById("formTask-{{todo.id}}").onsubmit = function(e){
+                                            e.preventDefault();
+                                        }
                                         document.getElementById("formTask-{{todo.id}}").action = "{% url 'todo_task_uncompleted' %}";
                                         document.getElementById("descriptionTask-{{todo.id}}").classList.remove("artefact");
                                         document.getElementById("descriptionTask-{{todo.id}}").classList.add("task-done");
@@ -150,13 +157,13 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="id_project" value="{{project.id}}">
                                     <input type="hidden" name="id_task" value="{{todo.id}}">
-                                    <button type="submit" class="btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</button>
+                                    <button type="submit" class="btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm"><span>{{ todo.complete|yesno:'Completed,Not Completed' }}</span></button>
                                 </form>
                                 <form action="{% url 'delete_todo_task' %}" id="delete-{{todo.id}}" method="POST" class="m-1">
                                     {% csrf_token %}
                                     <input type="hidden" name="id_project" value="{{project.id}}">
                                     <input type="hidden" name="id_task" value="{{todo.id}}">
-                                    <button type="submit" class="btn btn-block btn-danger btn-sm">Delete</button>
+                                    <button type="submit" class="update-requirement btn btn-block btn-danger btn-sm">Delete</button>
                                 </form>
                             </div>
                             {% endif %}
@@ -226,4 +233,5 @@
 {% block js %}
 {{ block.super }}
 <script src="{% static 'js/create_project.js'%}"></script>
+<script src="{% static 'js/update_requirements.js' %}"></script>
 {% endblock %}

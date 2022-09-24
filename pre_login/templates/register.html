@@ -8,8 +8,7 @@
 {% endblock %}
 
 {% block content %}
-    <p id="fetchTo" style="visibility:hidden;">/register_user/</p>
-    <main class="container d-flex justify-content-center">
+    <main class="container d-flex justify-content-center my-5">
         <div class="form-group rounded p-3">
             <form action="/register_user/" method="POST" id="form" >
                 {% csrf_token %}
