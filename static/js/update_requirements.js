@@ -37,7 +37,7 @@ $(document).ready(function() {
             });
         });
     })}
-    function deleteFeatures(){$('.form-delete-requirement').each(function() {
+    function deleteRequirement(){$('.form-delete-requirement').each(function() {
         $(this).on('submit', function(e) {
             e.preventDefault();
             var form = $(this);
@@ -74,8 +74,53 @@ $(document).ready(function() {
                             </div>`);
                     };
                 updateFeatures();
-                deleteFeatures();
+                deleteRequirement();
                 addRequirements();
+                }
+            });
+        });
+    })}
+
+    function deleteTask(){$('.delete-task').each(function() {
+        $(this).on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                headers: {'X-CSRFToken': csrftoken},
+                success: function(data) {
+                    /* $("#task-description-"+data.id).remove(); */
+                    $("#to_dos-list").html(``);
+                    var lines = data.lines;
+                    for (var i = 0; i < lines.length; i++) {
+                        $("#to_dos-list").append(
+                            `<li class="list-group-item artefact" id="description-${i}">
+                            <div class="d-flex flex-wrap justify-content-between">
+                                <div>
+                                    <p class="ml-2" id="description-task-${i}">${lines[i]}</p>
+                                </div>
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    <form action="/projects/todo_task_completed" id="formTask-${i}" method="POST" class="form-update-to-do m-1">
+                                        <input type="hidden" name="csrfmiddlewaretoken" value=${csrftoken}>
+                                        <input type="hidden" name="id_project" value="${data.id_project}">
+                                        <input type="hidden" name="id_task" value="${i}">
+                                        <button type="submit" class="btn btn-block primary btn-sm" id="update-requirement-submit-${i}">Not Completed</button>
+                                    </form>
+                                    <form action="/projects/delete_todo_task" id="delete-task-${i}" method="POST" class="delete-task m-1">
+                                        <input type="hidden" name="csrfmiddlewaretoken" value=${csrftoken}>
+                                        <input type="hidden" name="id_project" value="${data.id_project}">
+                                        <input type="hidden" name="id_task" value="${i}">
+                                        <button type="submit" class="btn btn-block btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            </div>`);
+                    };
+                updateFeatures();
+                deleteRequirement();
+                addRequirements();
+                deleteTask();
                 }
             });
         });
@@ -157,16 +202,90 @@ $(document).ready(function() {
                         }
                     }
                 updateFeatures();
-                deleteFeatures();
+                deleteRequirement();
                 addRequirements();
+                deleteTask();
+                addTask();
                 }
                 });
             });
         });
     }
+
+    function addTask(){
+        $("#addTasks").click(function() {
+            var id_project = $("#id_project").val();
+            var user_id = $("#user_id").val();
+            $('#form-add-to_dos').html(`
+            <form action="/projects/add_todo_task" method="POST" id="add-to_dos">
+                <input type="hidden" name="csrfmiddlewaretoken" value=${csrftoken}>
+                <input type="hidden" name="id_project" value="${id_project}">
+                <input type="hidden" name="user_id" value="${user_id}">
+                <div class="form-group">
+                    <label for="new_requirements">New Requirements</label>
+                    <textarea name="new_tasks" class="form-control" id="new_tasks" rows="3" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
+                </div>
+                <button type="submit" class="btn primary my-2">Add</button>
+            </form>
+        `);
+        $("#add-to_dos").submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            $("#form-add-to_dos").html(`<button class="btn primary mt-2" id="add-requirements-button"> Add Tasks</button>`);
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                headers: {'X-CSRFToken': csrftoken},
+                success: function(data) { 
+                    var new_to_dos = data.new_to_dos.split("\r\n");
+                    var id_task = parseInt(data.num_lines_before);
+                    for (var i = 0; i < new_to_dos.length; i++) {
+                        if (new_to_dos[i] != "") {
+                            $("#to_dos-list").append(
+                                `<li class="list-group-item artefact" id="description-${id_task}">
+                                <div class="d-flex flex-wrap justify-content-between">
+                                    <div>
+                                        <p class="ml-2" id="requirement-info-${id_task}">${new_to_dos[i]}</p>
+                                    </div>
+                                    <div class="d-flex flex-wrap justify-content-between">
+                                        <form action="/projects/todo_task_completed" id="form-${id_task}" method="POST" class="form-update-requirements m-1">
+                                            <input type="hidden" name="csrfmiddlewaretoken" value=${csrftoken}>
+                                            <input type="hidden" name="id_project" value="${data.id_project}">
+                                            <input type="hidden" name="id_task" value="${id_task}">
+                                            <button type="submit" class="btn btn-block primary btn-sm" id="update-todo-submit--${id_task}">Not Completed</button>
+                                        </form>
+                                        <form action="/projects/delete_todo_task" id="delete-${id_task}" method="POST" class="form-delete-requirement m-1">
+                                            <input type="hidden" name="csrfmiddlewaretoken" value=${csrftoken}>
+                                            <input type="hidden" name="id_project" value="${data.id_project}">
+                                            <input type="hidden" name="id_task" value="${id_task}">
+                                            <button type="submit" class="btn btn-block btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>`);
+                            id_task++;
+                        }
+                    }
+                updateFeatures();
+                deleteRequirement();
+                addRequirements();
+                deleteTask();
+                addTask();
+                }
+                });
+            });
+        });
+    };
     updateFeatures();
-    deleteFeatures();
+    deleteRequirement();
     addRequirements();
+    deleteTask();
+    addTask();
 });
+
+
+
+
+
 
 

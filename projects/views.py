@@ -177,8 +177,7 @@ def add_requirements(request):
     requirements = File()
     if requirements.validator(request.POST['new_requirements']):
         requirements.openFile('requirements',project.requirements)
-        num_lines_before = len(requirements.lines)
-        print(num_lines_before)        
+        num_lines_before = len(requirements.lines)      
         project.requirements = requirements.addLines(request.POST['new_requirements'],'requirements', project.requirements, request.POST['user_id'])
         project.save()
         print(requirements.lines)
@@ -201,9 +200,11 @@ def add_todo_task(request):
     todo = File()
     if todo.validator(request.POST['new_tasks']):
         todo.openFile('ToDo',project.todo)
+        num_lines_before = len(todo.lines)
         project.todo = todo.addLines(request.POST['new_tasks'],'ToDo', project.todo, request.POST['user_id'])
         project.save()
-    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
+        return JsonResponse({'status': 'success','new_to_dos': request.POST['new_tasks'], 'num_lines_before': num_lines_before, 'id_project': request.POST['id_project']})
+    return JsonResponse({'status': 'error'})
 
 def delete_todo_task(request):
     if 'user_id' not in request.session:
@@ -212,7 +213,7 @@ def delete_todo_task(request):
     todo = File()
     info = todo.openFile('ToDo',project.todo)
     todo.deleteLine(int(request.POST['id_task']),'ToDo', project.todo)
-    return redirect(f"/users/{request.session['user_id']}/view_project/{request.POST['id_project']}")
+    return JsonResponse({'status': 'delete', 'id': request.POST['id_task'],'lines': todo.lines, 'id_project': request.POST['id_project']})
 
 def add_user_flow_image(request):
     if 'user_id' not in request.session:

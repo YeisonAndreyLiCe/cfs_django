@@ -118,7 +118,7 @@
         <div class="row">
             <div class="col-12">
                 <h2 class="text-center">TO DO List</h2>
-                <ul class="list-group">
+                <ul class="list-group" id="to_dos-list">
                     {% for todo in to_dos %}
                     <li class="list-group-item artefact" id="task-description-{{todo.id}}">
                         <div class="d-flex flex-wrap justify-content-between">
@@ -143,11 +143,11 @@
                                     <input type="hidden" name="id_task" value="{{todo.id}}">
                                     <button type="submit" id="update-todo-submit-{{todo.id}}" class="btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</button>
                                 </form>
-                                <form action="{% url 'delete_todo_task' %}" id="delete-{{todo.id}}" method="POST" class="m-1">
+                                <form action="{% url 'delete_todo_task' %}" id="delete-task-{{todo.id}}" method="POST" class="delete-task m-1">
                                     {% csrf_token %}
                                     <input type="hidden" name="id_project" value="{{project.id}}">
                                     <input type="hidden" name="id_task" value="{{todo.id}}">
-                                    <button type="submit" class="update-requirement btn btn-block btn-danger btn-sm">Delete</button>
+                                    <button type="submit" class="update-todo btn btn-block btn-danger btn-sm">Delete</button>
                                 </form>
                             </div>
                             {% endif %}
@@ -157,28 +157,9 @@
                 </ul>
             </div>           
         </div>
-        <div id="formAddTasks"></div>
-        <p>
-            <a href="#" class="btn primary my-2" id="addTasks"> Add Tasks </a>
-            <script>
-                document.getElementById("addTasks").addEventListener("click", function(e){
-                    e.preventDefault();
-                    document.getElementById("formAddTasks").innerHTML = `
-                    <form action="{% url 'add_todo_task' %}" method="POST" id="formAddRequirements">
-                        {% csrf_token %}
-                        <input type="hidden" name="id_project" value="{{project.id}}">
-                        <input type="hidden" name="user_id" value="{{request.session.user_id}}">
-                        <div class="form-group">
-                            <label for="new_requirements">New Requirements</label>
-                            <textarea name="new_tasks" class="form-control" id="new_tasks" rows="3" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
-                        </div>
-                        <button type="submit" class="btn primary my-2">Add</button>
-                    </form>
-                    `;
-                    document.getElementById("addTasks").remove();
-                });
-            </script>
-        </p>
+        <div id="form-add-to_dos">
+            <button class="btn primary my-2" id="addTasks"> Add Tasks </button>
+        </div>
         <div class="row my-3">
             <div class=" col-10 offset-1 d-flex flex-column align-items-center">
                 {% if project.user_flow_image != '' %}
