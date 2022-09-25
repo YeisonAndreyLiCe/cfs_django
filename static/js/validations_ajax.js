@@ -20,5 +20,5 @@ jQuery(window).ready(function() {
                 alertMessage.classList.add('alert-danger');
             }
         });
-    }
+    };
 });

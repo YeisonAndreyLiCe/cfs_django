@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from traceback import print_stack
+from traceback import print_stack, print_tb
 
 def replace_special_chars(string):
     return string.replace(" ", "").replace(":", "_").replace(".", "-")
@@ -68,7 +68,10 @@ class File:
         path = os.path.join("projects", fileClass, name)
         with open(f"{path}.txt", "w") as destination:
             self.lines.pop(line_id)
-            self.content = "".join(self.lines)
+            list = []
+            for line in self.lines:
+                list.append(line) if line !="\n" else None
+            self.content = "".join(list)
             destination.write(self.content)
         return self.openFile(fileClass, name)
 
