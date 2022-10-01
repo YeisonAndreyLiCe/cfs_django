@@ -1,5 +1,5 @@
-"use strict";
 import csrftoken from "./get_cookie.js";
+"use strict";
 /* eslint-disable */
 $(document).ready(() => {
   function updateFeatures(){$(".update-feature").each(function() {

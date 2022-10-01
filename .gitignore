@@ -175,3 +175,7 @@ cython_debug/
 projects/ToDo/
 projects/requirements/
 cfs_project/settings.py
+static/js/package-lock.json
+static/js/package.json
+static/js/.eslintrc.json
+static/js/node_modules
