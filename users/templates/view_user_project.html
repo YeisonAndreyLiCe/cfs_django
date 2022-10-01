@@ -115,7 +115,7 @@
             </div>           
         </div>
         <div id="form-add-to_dos">
-            <button class="add-feature btn primary my-2" id="new_tasks"> Add Tasks </button>
+            <button class="add-feature btn primary my-2" id="ToDo"> Add Tasks </button>
         </div>
         <div class="row my-3">
             <div class=" col-10 offset-1 d-flex flex-column align-items-center">
@@ -155,5 +155,5 @@
 {% block js %}
 {{ block.super }}
 <script src="{% static 'js/create_project.js'%}"></script>
-<script src="{% static 'js/update_requirements.js' %}"></script>
+<script type="module" src="{% static 'js/update_requirements.js' %}"></script>
 {% endblock %}

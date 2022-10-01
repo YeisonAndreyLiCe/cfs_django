@@ -1,4 +1,3 @@
-/* eslint-disable-next-line */
 $(document).ready(function() {
   const preferColorScheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   const themeSwitcher = document.querySelector("#theme-switcher");

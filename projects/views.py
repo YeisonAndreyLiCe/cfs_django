@@ -156,10 +156,11 @@ def add_features(request, file_class):
             project.save()
         else:
             file.openFile('ToDo',project.todo)
-            project.todo = file.addLines(request.POST['new_tasks'],'ToDo', project.todo, request.POST['user_id'])
+            project.todo = file.addLines(request.POST['ToDo'],'ToDo', project.todo, request.POST['user_id'])
             project.save()
+            file_class = 'ToDo'
         num_lines_before = len(file.lines)
-        return JsonResponse({'status': 'success','info': request.POST[file_class], 'num_lines_before': num_lines_before, 'id_project': request.POST['id_project']})
+        return JsonResponse({'type':file_class,'status': 'success','lines': request.POST[file_class].split("\r\n"), 'num_lines_before': num_lines_before, 'id_project': request.POST['id_project']})
     return JsonResponse({'status': 'error'})
 
 def delete_feature(request, id, file_class, id_project):
@@ -172,8 +173,9 @@ def delete_feature(request, id, file_class, id_project):
         file.deleteLine(int(id),file_class, project.requirements)
     else:
         file.openFile('ToDo',project.todo)
-        file.deleteLine(int(id),file_class, project.todo)
-    return JsonResponse({'type': file_class, 'id': id,'lines': file.lines, 'id_project': id_project})
+        file.deleteLine(int(id),'ToDo', project.todo)
+        file_class = "ToDo"
+    return JsonResponse({'type': file_class, 'id': id,'lines':file.lines, 'id_project': id_project})
 
 def add_user_flow_image(request):
     if 'user_id' not in request.session:
