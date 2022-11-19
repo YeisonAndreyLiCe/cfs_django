@@ -1,49 +1,51 @@
 import csrftoken from "./get_cookie.js"; 
 import {updateToDO, updateRequirements, addLi, showForm} from "./project-features.js";
 $(document).ready(() => {
-  function updateFeatures(){$(".update-feature").each(function() {
-    $(this).on("submit", (e)=> {
-      e.preventDefault();
-      const href = $(this).attr("href");
-      $.ajax({
-        url: href,
-        headers: {"X-CSRFToken": csrftoken},
-        success: (data)=> {
-          data = JSON.parse(data);
-          if (data.type == "requirements") {
-            updateRequirements(data);
-          }else{
-            updateToDO(data);
-          }
-        },
+  function updateFeatures(){
+    $(".update-feature").each(function() {
+      $(this).on("submit", (e)=> {
+        e.preventDefault();
+        const href = $(this).attr("href");
+        $.ajax({
+          url: href,
+          headers: {"X-CSRFToken": csrftoken},
+          success: (data)=> {
+            data = JSON.parse(data);
+            if (data.type == "requirements") {
+              updateRequirements(data);
+            }else{
+              updateToDO(data);
+            }
+          },
+        });
       });
     });
-  });}
+  };
 
-  function deleteFeature(){$(".delete-feature").each((index, element)=> {
-    $(element).on("click", (e) => {
-      e.preventDefault();
-      let href = $(element).attr("href");
-      $.ajax({
-        url: href,
-        success: function(data) {
-          if (data.type == "new_requirements") {
-            $("#requirements-list").html("");
-            data.lines.forEach((line, index) => {
-              $("#requirements-list").append(addLi(data,line, index));
-            });
-          }else{
-            $("#tasks-list").html("");
-            data.lines.forEach((line, index) => {
-              $("#tasks-list").append(addLi(data, line, index));
-            });
+  function deleteFeature(){
+    $(".delete-feature").each((index, element)=> {
+      $(element).on("click", (e) => {
+        e.preventDefault();
+        let href = $(element).attr("href");
+        $.ajax({
+          url: href,
+          success: function(data) {
+            if (data.type == "requirements") {
+              $("#requirements-list").html("");
+              data.lines.forEach((line, index) => {
+                $("#requirements-list").append(addLi(data,line, index));
+              });
+            }else{
+              $("#tasks-list").html("");
+              data.lines.forEach((line, index) => {
+                $("#tasks-list").append(addLi(data, line, index));
+              });
+            };
           }
-          updateFeatures();
-          deleteFeature();
-        }
+        });
       });
     });
-  });}
+  };
 
   function addFeatures(){
     $("button.add-feature").each((index, element)=>{
@@ -70,10 +72,9 @@ $(document).ready(() => {
         headers: {"X-CSRFToken": csrftoken},
         success: function(data) {
           if(data.status == "success"){
-            let num = parseInt(data.num_lines_before)-1;
+            let num = parseInt(data.num_lines_before);//-1?
             data.lines.forEach((line, index) => {
               if (type == "new_requirements") {
-                console.log(addLi(data, line, num));
                 $("#requirements-list").append(addLi(data, line, num+index));
               }else{
                 $("#tasks-list").append(addLi(data, line, num+index));
@@ -82,12 +83,20 @@ $(document).ready(() => {
           };
         }
       });
-      addFeatures();
-      updateFeatures();
-      deleteFeature();
     });
   }
-  addFeatures();
+  /* const observer = new MutationObserver(()=> {
+    updateFeatures();
+    deleteFeature();
+    addFeatures();
+
+  });
+  const targetNode1 = document.getElementById("tasks-list");
+  observer.observe(targetNode1, {childList: true});
+  const targetNode2 = document.getElementById("requirements-list");
+  observer.observe(targetNode2, {childList: true}); */
+
   updateFeatures();
   deleteFeature();
+  addFeatures();
 });

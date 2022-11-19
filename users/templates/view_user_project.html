@@ -99,9 +99,9 @@
                 <h2 class="text-center">TO DO List</h2>
                 <ul class="list-group" id="tasks-list">
                     {% for todo in to_dos %}
-                    <li class="list-group-item {{todo_todo.complete|yesno:'task-done,artefact'}}" id="task-description-{{todo.id}}">
+                    <li id="ToDo-{{todo.id}}" class="list-group-item {{todo_todo.complete|yesno:'task-done,artefact'}}">
                         <div class="d-flex flex-wrap justify-content-between">
-                            <p class="ml-2" id="description-task-{{todo.id}}">{{ todo.description }}</p>
+                            <p class="ml-2" id="ToDo-info-{{todo.id}}">{{ todo.description }}</p>
                             {% if todo.id != 'error' %}
                             <div class="d-flex flex-wrap justify-content-between">
                                 <a href="{% url 'update_feature' id=todo.id file='ToDo' status=todo.complete|yesno:'Completed,Not Completed' id_project=project.id %}" class="update-feature btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</a>

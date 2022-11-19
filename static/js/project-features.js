@@ -20,9 +20,9 @@ export const updateRequirements = (data) => {
 
 export const addLi= (data, line, index) => {
   return(`
-    <li class="list-group-item artefact ${data.status=="complete" ? "done":"artefact"} id="requirement-${index}">
+    <li id="${data.type}-${index}" class="list-group-item artefact ${data.status=="complete" ? "done":"artefact"}">
       <div class="d-flex flex-wrap justify-content-between">
-        <p class="ml-2" id="requirement-info-${index}">${line}</p>
+        <p class="ml-2" id="${data.type}-info-${index}">${line}</p>
         <div class="d-flex flex-wrap justify-content-between">
         <a href="/projects/update_feature/${index}/${data.type}/${data.status}/${data.project_id}" class="update-feature btn btn-block ${ data.status == "Complete" ? "secondary" : "primary" } btn-sm">
                 ${ data.status == "Completed" ? "Completed" : "Not Completed" }

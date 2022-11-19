@@ -56,9 +56,11 @@ class File:
     def addLines(self, content, fileClass, name, user_id):
         if name != "" and name != None: 
             path = os.path.join("projects", fileClass, name)
+            with open(f"{path}.txt", "r") as destination:
+                self.lines = (destination.readlines())
             with open(f"{path}.txt", "a") as destination:
                 destination.write("\n" + content)
-                self.openFile(fileClass, name)
+                #self.openFile(fileClass, name)
             return name
         else:
             self.save(content, fileClass, user_id)
