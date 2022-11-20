@@ -2,6 +2,7 @@ from cmath import phase
 from django.urls import path
 from . import views
 
+app_name = 'projects'
 urlpatterns = [
     path('<int:id>/new_project', views.new_project, name='new_project'),
     path('create_project', views.create_project, name='create_project'),

@@ -46,7 +46,7 @@
             <div class="d-flex flex-column align-items-center">
                 <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid">
                 <div>
-                    <a href="{% url 'delete_wireframe' id=project.id %}" class="btn btn-danger mt-2">Delete Wireframe</a>
+                    <a href="{% url 'projects:delete_wireframe' id=project.id %}" class="btn btn-danger mt-2">Delete Wireframe</a>
                 </div>
             </div>
             {% else %}
@@ -57,7 +57,7 @@
                     document.getElementById('addWireframe').addEventListener('click', function(e){
                         e.preventDefault();
                         document.getElementById('projectWireframe').innerHTML = `
-                            <form action="{% url 'add_wireframe' id=project.id %}" method="POST" enctype="multipart/form-data">
+                            <form action="{% url 'projects:add_wireframe' id=project.id %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <label for="wireframe" class="fw-bold">User Flow Image</label>
                                 <input type="file" name="wireframe" id="wireframe">
@@ -79,8 +79,8 @@
                         <p class="ml-2" id="requirement-info-{{requirement.id}}">{{ requirement.description }}</p>
                         {% if requirement.id != 'error' %}
                         <div class="d-flex flex-wrap justify-content-between">
-                            <a href="{% url 'update_feature' id=requirement.id file='requirements' status=requirement.complete|yesno:'Completed,Not Completed' id_project=project.id %}" class="update-feature btn btn-block {{ requirement.complete|yesno:'secondary, primary' }} btn-sm">{{ requirement.complete|yesno:'Completed,Not Completed' }}</a>
-                            <a href="{% url 'delete_feature' id=requirement.id file_class='requirements' id_project=project.id %}" class="delete-feature btn btn-block btn-danger btn-sm">Delete</a>
+                            <a href="{% url 'projects:update_feature' id=requirement.id file='requirements' status=requirement.complete|yesno:'Completed,Not Completed' id_project=project.id %}" class="update-feature btn btn-block {{ requirement.complete|yesno:'secondary, primary' }} btn-sm">{{ requirement.complete|yesno:'Completed,Not Completed' }}</a>
+                            <a href="{% url 'projects:delete_feature' id=requirement.id file_class='requirements' id_project=project.id %}" class="delete-feature btn btn-block btn-danger btn-sm">Delete</a>
                         </div>
                         {% endif %}
                     </div>
@@ -104,8 +104,8 @@
                             <p class="ml-2" id="ToDo-info-{{todo.id}}">{{ todo.description }}</p>
                             {% if todo.id != 'error' %}
                             <div class="d-flex flex-wrap justify-content-between">
-                                <a href="{% url 'update_feature' id=todo.id file='ToDo' status=todo.complete|yesno:'Completed,Not Completed' id_project=project.id %}" class="update-feature btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</a>
-                                <a href="{% url 'delete_feature' id=todo.id file_class='ToDo' id_project=project.id %}" class="delete-feature btn btn-block btn-danger btn-sm">Delete</a>
+                                <a href="{% url 'projects:update_feature' id=todo.id file='ToDo' status=todo.complete|yesno:'Completed,Not Completed' id_project=project.id %}" class="update-feature btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</a>
+                                <a href="{% url 'projects:delete_feature' id=todo.id file_class='ToDo' id_project=project.id %}" class="delete-feature btn btn-block btn-danger btn-sm">Delete</a>
                             </div>
                             {% endif %}
                         </div>
@@ -122,7 +122,7 @@
                 {% if project.user_flow_image != '' %}
                     <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid">
                     <div>
-                        <a href="{% url 'delete_user_flow_image' id=project.id %}" class="btn btn-danger my-2"> Delete Image</a>
+                        <a href="{% url 'projects:delete_user_flow_image' id=project.id %}" class="btn btn-danger my-2"> Delete Image</a>
                     </div>
                 {% else %}
                     <div id="userFlowImage">
@@ -131,7 +131,7 @@
                             document.getElementById("addUserFlowImage").addEventListener("click", function(e){
                                 e.preventDefault();
                                 document.getElementById("userFlowImage").innerHTML = `
-                                <form action="{% url 'add_user_flow_image' %}" method="POST" class="form" enctype="multipart/form-data">
+                                <form action="{% url 'projects:add_user_flow_image' %}" method="POST" class="form" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <input type="hidden" name="id_project" value="{{project.id}}">
                                     <label for="user_flow_image fw-bold">User Flow Image</label>
@@ -147,8 +147,8 @@
         </div>
     </div>
     <div class="col-10 offset-1 offset-md-3 offset-lg-5">
-        <a href="/projects/{{project.id}}/edit" class="btn primary" id="edit"> Edit Project </a>
-        <a href="/projects/{{project.id}}/delete" class="btn btn-danger my-2" id="delete"> Delete Project </a>
+        <a href="{% url 'projects:edit_project' project.id %}" class="btn primary" id="edit"> Edit Project </a>
+        <a href="{% url 'projects:delete_project' project.id %}" class="btn btn-danger my-2" id="delete"> Delete Project </a>
     </div>
 </main>
 {% endblock %}

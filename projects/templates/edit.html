@@ -21,7 +21,7 @@
 <main class="container-fluid px-5">   
     <div class="row">
         <div class="col-12">
-            <form action="{% url 'update_project' id=project.id %}" id="form" enctype="multipart/form-data" method="post">
+            <form action="{% url 'projects:update_project' id=project.id %}" id="form" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="form-group m-3">
                     {% if project.public_status %}
@@ -55,8 +55,8 @@
                     <textarea class="form-control" id="todoList" rows="5" name="todo" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)">{{todoList}}</textarea>
                 </div>
                 <button type="submit" class="btn primary m-3">Submit</button>
-                <a href="/users/{{request.session.user_id}}/view_project/{{project.id}}"  class="btn secondary">View Project</a>
-                <a href="{% url 'delete_project' id=project.id %}" class="btn secondary">Delete Project</a>
+                <a href="{% url 'users:view_project' request.session.user_id project.id %}"  class="btn secondary">View Project</a>
+                <a href="{% url 'projects:delete_project' id=project.id %}" class="btn secondary">Delete Project</a>
             </form>
         </div>
     </div>
