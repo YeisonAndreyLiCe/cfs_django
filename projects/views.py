@@ -1,5 +1,5 @@
-from curses import use_default_colors
-from django.shortcuts import render, redirect
+#from curses import use_default_colors
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Project
 from users.models import User
@@ -13,7 +13,6 @@ def projects_templates(request):
         return redirect('/login')
     path = os.path.join('projects', 'templates')
         #os.makedirs(path)
-    print(path)
     return render(request, 'projects_templates.html')
 
 def new_project(request,id):
@@ -64,7 +63,7 @@ def create_project(request):
 def edit(request, id):
     if 'user_id' not in request.session:
         return redirect('/login')
-    project = Project.objects.get(id =id)
+    project = get_object_or_404(Project, id=id)
     requirement = File()
     todo = File()
     requirement.openFile('requirements',project.requirements)
@@ -87,7 +86,7 @@ def update(request, id):
                 data[key] = value
             print(data)
             return JsonResponse(data)
-        project = Project.objects.get(id=id)
+        project =  get_object_or_404(Project, id=id) #Project.objects.get(id=id)
         project.name = request.POST['name']
         project.public_status = request.POST['public_status']
         project.description = request.POST['description']
@@ -126,7 +125,7 @@ def delete(request, id):
 def update_feature(request, id, file, status, id_project):
     if 'user_id' not in request.session:
         return redirect('/login')
-    project = Project.objects.get(id=id_project)
+    project = get_object_or_404(Project, id=id_project)
     todo = File()
     if file == 'requirements':
         todo.openFile('requirements',project.requirements)
@@ -182,7 +181,7 @@ def delete_feature(request, id, file_class, id_project):
 def add_user_flow_image(request):
     if 'user_id' not in request.session:
         return redirect('/login')
-    project = Project.objects.get(id=request.POST['id_project'])
+    project = get_object_or_404(Project, id=request.POST['id_project']) # Project.objects.get(id=request.POST['id_project'])
     try:
         project.user_flow_image = request.FILES['user_flow_image']
         project.save()
@@ -194,7 +193,7 @@ def add_user_flow_image(request):
 def delete_user_flow_image(request, id):
     if 'user_id' not in request.session:
         return redirect('/login')
-    project = Project.objects.get(id=id)
+    project =  get_object_or_404(Project, id=id)
     os.remove(project.user_flow_image.path)
     project.user_flow_image = ""
     project.save()
@@ -203,7 +202,7 @@ def delete_user_flow_image(request, id):
 def add_wireframe(request, id):
     if 'user_id' not in request.session:
         return redirect('/login')
-    project = Project.objects.get(id=id)
+    project = get_object_or_404(Project, id=id)
     try:
         project.wireframe = request.FILES['wireframe']
         project.save()
@@ -214,7 +213,7 @@ def add_wireframe(request, id):
 def delete_wireframe(request, id):
     if 'user_id' not in request.session:
         return redirect('/login')
-    project = Project.objects.get(id=id)
+    project = get_object_or_404(Project, id=id)
     os.remove(project.wireframe.path)
     project.wireframe = ""
     project.save()

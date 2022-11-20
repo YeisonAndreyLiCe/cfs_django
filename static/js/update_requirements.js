@@ -2,6 +2,7 @@ import csrftoken from "./get_cookie.js";
 import {updateToDO, updateRequirements, addLi, showForm} from "./project-features.js";
 $(document).ready(() => {
   function updateFeatures(){
+    console.log('updateFeatures() :>> ');
     $(".update-feature").each(function() {
       $(this).on("submit", (e)=> {
         e.preventDefault();
@@ -23,6 +24,7 @@ $(document).ready(() => {
   };
 
   function deleteFeature(){
+    console.log('deleteFeature() :>> ');
     $(".delete-feature").each((index, element)=> {
       $(element).on("click", (e) => {
         e.preventDefault();
@@ -49,6 +51,7 @@ $(document).ready(() => {
 
   function addFeatures(){
     $("button.add-feature").each((index, element)=>{
+      console.log('addFeatures() :>> ');
       $(element).click(()=> {
         let project_id = $("#id_project").val();
         let user_id = $("#user_id").val();
@@ -61,10 +64,12 @@ $(document).ready(() => {
   }
 
   function addFeaturesSubmit(type){
+    console.log('addFeaturesSubmit() :>> ');
     $("#add_"+type).submit(function(e) {
       e.preventDefault();
       let form = $(this);
       $(this).parent().html(`<button class="add-feature btn primary my-2" id=${type}> Add ${type.split("_")[1]} </button>`);
+      $("#"+type).click(()=> {addFeatures()});
       $.ajax({
         url: form.attr("action"),
         type: "POST",

@@ -1,6 +1,6 @@
 #from multiprocessing import context
 from tabnanny import check
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import User
 from django.http import JsonResponse
 from projects.models import Project
@@ -30,7 +30,7 @@ def view_project(request, id_user, id_project):
     if 'user_id' not in request.session:
         return redirect('/login')
     #user = User.objects.get(id=request.session['user_id'])
-    project = Project.objects.get(id =id_project)
+    project = get_object_or_404(Project, id=id_project)
     requirements = File()
     todo = File()
     requirements = requirements.openFile('requirements',project.requirements)
