@@ -17,4 +17,5 @@ urlpatterns = [
     path('<int:id>/delete_user_flow_image', views.delete_user_flow_image, name='delete_user_flow_image'),
     path('<int:id>/add_wireframe', views.add_wireframe, name='add_wireframe'),
     path('<int:id>/delete_wireframe', views.delete_wireframe, name='delete_wireframe'),
+    path('public_projects', views.public_projects, name='public_projects'),
 ]

@@ -214,3 +214,7 @@ def delete_wireframe(request, id):
     project.wireframe = ""
     project.save()
     return redirect(reverse("users:view_project", args=(request.session['user_id'],id,)))
+
+def public_projects(request):
+    projects = Project.objects.filter(public_status=True)
+    return render(request, "projects/public_projects.html", {'projects': projects})
