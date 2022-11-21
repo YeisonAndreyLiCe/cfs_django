@@ -5,23 +5,24 @@ from users.models import User
 import bcrypt
 from django.http import JsonResponse
 from .models import Cookie
+from django.urls import reverse
 
 def index(request):
     """ context = {
         'cookies': Cookie.objects.all()
     }
     return render(request, 'index.html', context) """
-    return render(request, 'index.html')
+    return render(request, 'pre_login/index.html')
 
 def login(request):
-    return render(request, 'login.html')
+    return render(request, 'pre_login/login.html')
 
 def logout(request):
     request.session.flush()
     return redirect('/')
 
 def register(request):
-    return render(request, 'register.html')
+    return render(request, 'pre_login/register.html')
 
 def register_user(request):
     if request.method == 'POST':
@@ -41,11 +42,10 @@ def register_user(request):
                 password = pw_hash
             )
             request.session['user_id'] = user.id
-            route = '/users/'+str(user.id)+'/projects'
+            route = reverse("users:projects", args=(user.id,)) 
             return JsonResponse({'route': route})
-            #return redirect('/users/projects_templates')
     else:
-        return redirect('/register')
+        return redirect(reverse('pre_login:register'))
 
 def login_user(request):
     print(request.POST)
@@ -55,21 +55,19 @@ def login_user(request):
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
-                route = '/users/'+str(logged_user.id)+'/projects'
+                route = reverse('users:projects', args=(logged_user.id,))  #'/users/'+str(logged_user.id)+'/projects'
                 return JsonResponse({'route': route})
             else:
                 return JsonResponse({'error': 'Invalid Password'})
         else:
             return JsonResponse({'error': "Invalid Email"})
-    return redirect('/register')
+    return redirect(reverse('pre_login:register'))
 
 def get_api_key(request):
-    print(request.POST)
     if request.method == 'POST':
         key = os.environ.get('IPSTACK_API_KEY')
-        print(key)
         return JsonResponse({'key': key})
-    return redirect('/register')
+    return redirect(reverse('pre_login:register'))
 
 def set_cookies(request):
     if request.method == 'POST':
@@ -82,4 +80,4 @@ def set_cookies(request):
         )
         Cookie.save()
         return JsonResponse({'success': 'success'})
-    return redirect('/register')
+    return redirect(reverse('pre_login:register'))
