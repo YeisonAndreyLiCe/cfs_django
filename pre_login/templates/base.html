@@ -31,15 +31,15 @@
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-between flex-grow-1 pe-3">
                                 {% if 'user_id' in request.session %}
-                                <li class="nav-item"><a class="nav-link" href="/projects/projects_templates">Templates</a></li>
                                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/users/{{request.session.user_id}}/projects">My Projects</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">My Profile</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">About the Author</a></li>
                                 <li class="nav-item"><a class="nav-link" href="/logout">Logout </a></li>
                                 <li class="nav-item"><a class="nav-link" href="/users/new_user_project">New Project</a></li>
                                 {% else %}
                                 <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/login">Login</a></li>
                                 {% endif %}
+                                <li class="nav-item"><a class="nav-link" href="/projects/projects_templates">Public Projects</a></li>
                                 <li class="nav-item">
                                     <div>
                                         <button class="switch" id="theme-switcher">

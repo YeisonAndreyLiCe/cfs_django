@@ -1,0 +1,16 @@
+.effects-hover{
+ line-height: 3;
+ letter-spacing: .1rem;
+}
+
+#footer-index{
+    background-color: var(--primary-8);
+    color: var(--font-color-6);
+    position: absolute;
+    width: 100%;
+    line-height: 2.5rem;
+}
+
+#form-contact{
+    background-color: var(--primary-8);
+}

@@ -181,3 +181,5 @@ static/js/.eslintrc.json
 static/js/node_modules
 static/js/view_project.js
 static/js/update.js
+pre_login/static
+README.md

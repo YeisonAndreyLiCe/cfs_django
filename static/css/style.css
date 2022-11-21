@@ -141,6 +141,7 @@ main{
     background-color: var(--primary-8);
     color: var(--font-color-6);
     position: absolute;
+    margin-top: 100px;
     bottom: 0;
     width: 100%;
     line-height: 2.5rem;

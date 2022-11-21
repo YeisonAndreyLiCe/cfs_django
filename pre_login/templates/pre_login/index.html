@@ -1,19 +1,26 @@
 {% extends 'base.html' %}
 {% block title %} cfs|homepage {% endblock %}
 {% load static %}
+{% block css %} 
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 {% block content %}
-<main id="main" class="mb-2 mt-5">
+<main id="main" class="mb-2 my-5">
     <header class="d-flex justify-content-center">
         <div class="row container text-center">
             <div class="col-12 mt-5">
                 <h1 class="text-cente" id="csf-title">
-                    Your Best Ally When Managing Full-stack Projects
+                    Hello, I'm Yeison Andrey
                 </h1>                  
             </div>
             <div class="col-12 col-md-8 offset-md-2">
-                <p class="text-center">
-                    Manage your projects with ease. Create a project, add a member, and track progress. Copilot Full Stack is the best way to manage your projects.
-                    It's free and easy to use. It allows you to sync your activities with your team.
+                <p class="lh-base text-center fs-5 effects-hover">
+                    In this web application you can find the project I have worked on. You will see a description of each project an image related to the project as well as requirements (implemented technologies).
+                </p>
+                <hr>
+                <p class="lh-base text-center fs-6 effects-hover">
+                    If you want try the application you can do it by clicking on the button below. to register and log in. Once logged in you can create, edit and delete projects. Your information and the information related to your projects will be deleted 24 hours after you register, so take that into account.
                 </p>             
             </div>
             <div class="col-12 my-5">
@@ -22,33 +29,47 @@
         </div>
     </header>
     <div class=" container about-cfs d-flex flex-column align-items-center my-3">
-    <h2 class="text-center h2 mt-5 mb-2">A Quickly Visualization of Your Projects</h2>
-    <div class="row">
-        <div class="col-lg-10 offset-lg-1">
-            <img src="{% static '/images/cfs-project-lg-size.png' %}" alt="csf image" class="img-fluid border">
+    <h2 class="text-center h2 mt-5 mb-2">Something About Me</h2>
+    <div class="row mb-5">
+        <p class="text-center fs-5 mb-2"> I love programming. It is quite intuitive for me!.</p>
+        <div class="col-md-12 col-lg-4 text-lg-start">
+            <h3 class="secondary rounded p-2 text-center">Full Stack</h3>
+            <ul class="list-group">
+                <li class="fs-6 lh-base list-group-item primary">Django</li>
+                <li class="fs-6 lh-base list-group-item primary">Flask</li>
+                <li class="fs-6 lh-base list-group-item primary">Python</li>
+                <li class="fs-6 lh-base list-group-item primary">JavaScript</li>
+                <li class="fs-6 lh-base list-group-item primary">HTML</li>
+                <li class="fs-6 lh-base list-group-item primary">CSS</li>
+                <li class="fs-6 lh-base list-group-item primary">PostgreSQL</li>
+                <li class="fs-6 lh-base list-group-item primary">Bootstrap</li>
+                <li class="fs-6 lh-base list-group-item primary">jQuery</li>
+                <li class="fs-6 lh-base list-group-item primary">MySQL</li>
+            </ul>
+            <h3 class="text-center primary rounded p-2 my-1">Creating</h3>
+        </div>
+        <div class="col-md-12 col-lg-4">
+            <img class="img-fluid" src="{% static '/images/yeison.png' %}" alt="photo">
+            <h3 class="text-center primary rounded p-2 my-1">Learning</h3>
+        </div>
+        <div class="col-md-12 col-lg-4 text-lg-end">
+            <h3 class="secondary rounded p-2 text-center">Data Science</h3>
+            <ul class="list-group">
+                <li class="fs-6 lh-base list-group-item primary">Python</li>
+                <li class="fs-6 lh-base list-group-item primary">Pandas</li>
+                <li class="fs-6 lh-base list-group-item primary">Numpy</li>
+                <li class="fs-6 lh-base list-group-item primary">Matplotlib</li>
+                <li class="fs-6 lh-base list-group-item primary">Seaborn</li>
+                <li class="fs-6 lh-base list-group-item primary">Sklearn</li>
+                <li class="fs-6 lh-base list-group-item primary">Anaconda</li>
+                <li class="fs-6 lh-base list-group-item primary">Jupyter lab</li>
+                <li class="fs-6 lh-base list-group-item primary">Colab </li>
+                <li class="fs-6 lh-base list-group-item primary">ML</li>
+            </ul>
+            <h3 class="text-center primary rounded p-2 my-1">Innovating</h3>
         </div>
     </div>
-    <h2 class="text-center h2 mt-5 mb-2">Project Info</h2>
-    <div>
-        <img src="{% static '/images/project-dark-view.png' %}" alt="csf image" class="img-fluid border index-image">
-    </div>
-    <h2 class="mt-5 mb-2">Responsive</h2>
-    <div>
-        <img src="{% static '/images/cfs-project-md-size.png' %}" alt="csf image" class="img-fluid  index-image">
-    </div>
-    <h2 class="mt-5 mb-2">Dark and Light Mode</h2>
-    <div class="d-flex flex-wrap justify-content-center">
-        <img src="{% static '/images/mobile-ligth-view.png' %}" alt="csf image" class="img-fluid ">
-        <img src="{% static '/images/mobile-dark-view.png' %}" alt="csf image" class="img-fluid ">
-    </div>
-    <div class="about-cfs row container-fluid my-5">
-        <section class="col-10 offset-1">
-            <h1 class="text-center h2">About CFS</h1>
-            <p>
-                Full-stack Copilot is an app created with django and bootstrap. Still in development. It implements a lot of features that are useful for managing projects. The storage of the data is done with postgreSQL. The app is responsive and it has a dark and light mode. It also apply OOP to handle file and store requirements and To-Do lists of projects.
-            </p>
-        </section>
-    </div>
+    
     <div id="cookie-banner">
         <p>
             This website uses cookies to ensure you get the best experience on our website.
@@ -59,6 +80,39 @@
         </form>
     </div>
 </main>
+{% endblock %}
+{% block footer %}
+<footer id="footer-index" class="container-fluid p-5">
+    <div class="row">
+        <div class="col-12 col-lg-5 offset-lg-1">
+            <h3>Contact Info</h3>
+            <ul>
+                <li>Phone: +57 323-250-18-77</li>
+                <li>Email:yliscanoc@gmail.com</li>
+            </ul>
+        </div>
+        <div class="col-12 col-lg-5">
+            <h3>Contact form</h3>
+            <form action="" class="form-control border-0" id="form-contact">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Subject" aria-label="First name">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Email" aria-label="Last name">
+                    </div>
+                </div>
+                <div class="my-3">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <p class="text-center mt-2">Full-Stack Copilot &copy; 2022</p>
+</footer>
 {% endblock %}
 {% block scripts %}
 <script src="{% static '/js/cookies.js' %}"></script>
