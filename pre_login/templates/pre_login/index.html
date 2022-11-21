@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %} cfs|homepage {% endblock %}
+{% load static %}
+{% block content %}
+<main id="main" class="mb-2 mt-5">
+    <header class="d-flex justify-content-center">
+        <div class="row container text-center">
+            <div class="col-12 mt-5">
+                <h1 class="text-cente" id="csf-title">
+                    Your Best Ally When Managing Full-stack Projects
+                </h1>                  
+            </div>
+            <div class="col-12 col-md-8 offset-md-2">
+                <p class="text-center">
+                    Manage your projects with ease. Create a project, add a member, and track progress. Copilot Full Stack is the best way to manage your projects.
+                    It's free and easy to use. It allows you to sync your activities with your team.
+                </p>             
+            </div>
+            <div class="col-12 my-5">
+                <a class="btn scroll btn-lg" href="{% url 'pre_login:register' %}">Get Started</a>
+            </div>
+        </div>
+    </header>
+    <div class=" container about-cfs d-flex flex-column align-items-center my-3">
+    <h2 class="text-center h2 mt-5 mb-2">A Quickly Visualization of Your Projects</h2>
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <img src="{% static '/images/cfs-project-lg-size.png' %}" alt="csf image" class="img-fluid border">
+        </div>
+    </div>
+    <h2 class="text-center h2 mt-5 mb-2">Project Info</h2>
+    <div>
+        <img src="{% static '/images/project-dark-view.png' %}" alt="csf image" class="img-fluid border index-image">
+    </div>
+    <h2 class="mt-5 mb-2">Responsive</h2>
+    <div>
+        <img src="{% static '/images/cfs-project-md-size.png' %}" alt="csf image" class="img-fluid  index-image">
+    </div>
+    <h2 class="mt-5 mb-2">Dark and Light Mode</h2>
+    <div class="d-flex flex-wrap justify-content-center">
+        <img src="{% static '/images/mobile-ligth-view.png' %}" alt="csf image" class="img-fluid ">
+        <img src="{% static '/images/mobile-dark-view.png' %}" alt="csf image" class="img-fluid ">
+    </div>
+    <div class="about-cfs row container-fluid my-5">
+        <section class="col-10 offset-1">
+            <h1 class="text-center h2">About CFS</h1>
+            <p>
+                Full-stack Copilot is an app created with django and bootstrap. Still in development. It implements a lot of features that are useful for managing projects. The storage of the data is done with postgreSQL. The app is responsive and it has a dark and light mode. It also apply OOP to handle file and store requirements and To-Do lists of projects.
+            </p>
+        </section>
+    </div>
+    <div id="cookie-banner">
+        <p>
+            This website uses cookies to ensure you get the best experience on our website.
+        </p>
+        <form action="{% url 'pre_login:get_api_key' %}" id="accept-cookies">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Accept</button>
+        </form>
+    </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="{% static '/js/cookies.js' %}"></script>
+{% endblock %}

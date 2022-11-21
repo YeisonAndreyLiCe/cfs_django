@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %} cfs|homepage {% endblock %}
+{% block css %}
+{{ block.super }}
+{% load static %}
+<style>
+    .primary{
+        background-color:var(--btn-primary);
+        color:var(--font-color-10);
+    }
+    
+    .secondary{
+        background-color:var(--btn-secondary);
+        color:var(--font-color-6);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<p id="fetchTo" style="visibility:hidden;">{% url 'projects:create_project' %}</p>
+<main class="container-fluid px-5">   
+    <div class="row">
+        <div class="col-12">
+            <form action="{% url 'projects:create_project' %}" id="form" method="post">
+                {% csrf_token %}
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="project-status">Project Status</label>
+                    <select class="form-control" id="project-status" name="public_status">
+                        <option value="False">Public</option>
+                        <option value="True">Private</option>
+                    </select>
+                </div>
+                <div class="form-group m-3">
+                    <input type="text" class="form-control" id="projectName" placeholder="Project Name" name="name">
+                </div>
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="project-description">Project Description</label>
+                    <textarea class="form-control" id="project-description" rows="3" name="description" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
+                </div>
+                <div class="from-group m-3">
+                    <label class="fw-bold text-center" for="image">Wireframe</label>
+                    <input type="file" class="form-control" id="image" name="wireframe">
+                </div>
+                <div class="from-group m-3">
+                    <label class="fw-bold" for="user_flow">User Flow</label>
+                    <input type="file" class="form-control" id="user_flow" name="user_flow_image">
+                </div>
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="requirements">Requirements</label>
+                    <textarea class="form-control" id="requirements" rows="3" name="requirements" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
+                </div>
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="todoList">ToDo</label>
+                    <textarea class="form-control" id="todoList" rows="3" name="todo" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
+                </div>
+                <button type="submit" class="btn primary m-3">Submit</button>
+            </form>
+        </div>
+    </div>
+</main>
+<div class="container my-1">
+    <div class="row">
+        <div class="col-12 col-md-9 col-lg-6 offset-md-1 offset-lg-3">
+            <div id="alertMessage"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+{% load static %}
+<script src="{% static 'js/create_project.js' %}"></script>
+<script src="{% static 'js/validations_ajax.js' %}"></script>
+{% endblock %}

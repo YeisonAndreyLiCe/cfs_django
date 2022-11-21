@@ -49,3 +49,15 @@ export const showForm = (token, user_id, project_id, type)=>{
         <input type="submit" value="Add" class="btn primary my-2">
     </form>`);
 };
+
+export const addWireFrame = (token, user_id, project_id) =>{
+  return( `
+  <form action="projects/add_wireFrame" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrfmiddlewaretoken" value=${token}>
+      <input type="hidden" name="id_project" value="${project_id}">
+      <label for="wireFrame" class="fw-bold">User Flow Image</label>
+      <input type="file" name="wireFrame" id="wireFrame">
+      <input type="submit" value="Add WireFrame" class="btn primary">
+  </form>
+`);
+};

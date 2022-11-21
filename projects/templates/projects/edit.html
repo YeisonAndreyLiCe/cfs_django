@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %} cfs|homepage {% endblock %}
+{% block css %}
+{{ block.super }}
+{% load static %}
+<style>
+    .primary{
+        background-color:var(--btn-primary);
+        color:var(--font-color-10);
+    }
+    
+    .secondary{
+        background-color:var(--btn-secondary);
+        color:var(--font-color-6);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<p id="fetchTo" style="visibility:hidden;">/projects/create_project</p>
+<main class="container-fluid px-5">   
+    <div class="row">
+        <div class="col-12">
+            <form action="{% url 'projects:update_project' id=project.id %}" id="form" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="form-group m-3">
+                    {% if project.public_status %}
+                        <label class="fw-bold" for="project-status">Project Status</label>
+                        <select class="form-control" id="project-status" name="public_status">
+                            <option value="True">Public</option>
+                            <option value="False">Private</option>
+                        </select>
+                    {% else %}
+                        <label class="fw-bold" for="project-status">Project Status</label>
+                        <select class="form-control" id="project-status" name="public_status">
+                            <option value="False">Private</option>
+                            <option value="True">Public</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="project-name">Project Name</label>
+                    <input type="text" class="form-control" id="projectName" value="{{project.name}}" name="name">
+                </div>
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="project-description">project-description</label>
+                    <textarea class="form-control" id="project-description" rows="3" name="description" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)">{{project.description}}</textarea>
+                </div>
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="requirements">Requirements</label>
+                    <textarea class="form-control" id="requirements" rows="5" name="requirements" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)">{{requirements}}</textarea>
+                </div>
+                <div class="form-group m-3">
+                    <label class="fw-bold" for="todoList">ToDo</label>
+                    <textarea class="form-control" id="todoList" rows="5" name="todo" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)">{{todoList}}</textarea>
+                </div>
+                <button type="submit" class="btn primary m-3">Submit</button>
+                <a href="{% url 'users:view_project' request.session.user_id project.id %}"  class="btn secondary">View Project</a>
+                <a href="{% url 'projects:delete_project' id=project.id %}" class="btn secondary">Delete Project</a>
+            </form>
+        </div>
+    </div>
+</main>
+<div class="container my-1">
+    <div class="row">
+        <div class="col-12 col-md-9 col-lg-6 offset-md-1 offset-lg-3">
+            <div id="alertMessage"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+{% load static %}
+<script src="{% static 'js/create_project.js' %}"></script>
+<script src="{% static 'js/validations_ajax.js' %}"></script>
+{% endblock %}
