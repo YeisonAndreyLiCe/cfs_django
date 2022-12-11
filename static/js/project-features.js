@@ -27,7 +27,7 @@ export const addTask = (data, line, index) => {
         <div class="d-flex flex-wrap justify-content-between">
         <a href="/projects/update_feature/${index}/task/Not Completed/${data.id_project}" class="update-feature btn btn-block" }
         </a>
-        <a href="/projects/delete/task/${index}/${data.id_project}" class="delete-feature btn btn-block btn-danger btn-sm">
+        <a href="/projects/delete/task/${index}/${data.id_project}" class="delete-task btn btn-block btn-danger btn-sm">
                 Delete
         </a>
         </div>
@@ -42,8 +42,8 @@ export const addRequirement = (data, line, index) => {
       <div class="d-flex flex-wrap justify-content-between">
         <p class="ml-2" id="requirement-info-${index}">${line.split("--version")[0]}</p>
         <div class="d-flex flex-wrap justify-content-between">
-        <button class="btn primary"> ${line.split("--version")[1]? "version" + line.split("--version")[1]: "last version"} </button>
-        <a href="/projects/delete/requirement/${index}/${data.id_project}" class="delete-feature btn btn-block btn-danger btn-sm">
+        <button class="btn primary mx-2"> ${line.split("--version")[1]? "version" + line.split("--version")[1]: "last version"} </button>
+        <a href="/projects/delete/requirement/${index}/${data.id_project}" class="delete-requirement btn btn-block btn-danger btn-sm">
             Delete
         </a>
         </div>
@@ -60,7 +60,7 @@ export const addLi= (data, line, index) => {
         <div class="d-flex flex-wrap justify-content-between">
         <a href="/projects/update_feature/${index}/${data.type}/Not Completed/${data.id_project}" class="update-feature btn btn-block" }
         </a>
-        <a href="/projects/delete_feature/${index}/${data.type}/${data.id_project}" class="delete-feature btn btn-block btn-danger btn-sm">
+        <a href="/projects/delete_feature/${index}/${data.type}/${data.id_project}" class="delete-task btn btn-block btn-danger btn-sm">
                 Delete
         </a>
         </div>

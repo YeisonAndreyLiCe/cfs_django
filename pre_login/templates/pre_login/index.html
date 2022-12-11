@@ -24,53 +24,51 @@
                 </p>             
             </div>
             <div class="col-12 my-5">
-                <a class="btn scroll btn-lg" href="{% url 'pre_login:register' %}">Get Started</a>
+                <a class="btn primary scroll btn-lg" href="{% url 'pre_login:register' %}">Get Started</a>
             </div>
         </div>
     </header>
     <div class=" container about-cfs d-flex flex-column align-items-center my-3">
-    <h2 class="text-center h2 mt-5 mb-2">Something About Me</h2>
-    <div class="row mb-5">
-        <p class="text-center fs-5 mb-2"> I love programming. It is quite intuitive for me!.</p>
-        <div class="col-md-12 col-lg-4 text-lg-start">
-            <h3 class="secondary rounded p-2 text-center">Full Stack</h3>
-            <ul class="list-group">
-                <li class="fs-6 lh-base list-group-item primary">Django</li>
-                <li class="fs-6 lh-base list-group-item primary">Flask</li>
-                <li class="fs-6 lh-base list-group-item primary">Python</li>
-                <li class="fs-6 lh-base list-group-item primary">JavaScript</li>
-                <li class="fs-6 lh-base list-group-item primary">HTML</li>
-                <li class="fs-6 lh-base list-group-item primary">CSS</li>
-                <li class="fs-6 lh-base list-group-item primary">PostgreSQL</li>
-                <li class="fs-6 lh-base list-group-item primary">Bootstrap</li>
-                <li class="fs-6 lh-base list-group-item primary">jQuery</li>
-                <li class="fs-6 lh-base list-group-item primary">MySQL</li>
-            </ul>
-            <h3 class="text-center primary rounded p-2 my-1">Creating</h3>
+    <h3 class="text-center h2 mt-5 mb-4">Something About Me</h3>
+
+    <div class="row">
+        <div class="col-12 col-lg-6"> 
+            <p class="fs-5 lh-base">
+                I am a junior <strong>full stack developer</strong> and <strong>data scientist</strong>, with six months of experience in web development. I have leadership skills, adaptability and empathy that allow me to work effectively in a team. <br>
+                I am interested in continuing to develop my professional career working with companies where having a <strong>positive impact on society</strong> is a priority. Improving people's quality of life through technology is something that I'm looking for!. <br>
+                I would love to be part of a team of data scientists since my <strong>analytical skills</strong> as well as business interests will be really implemented in this field. I seek <strong> to solve challenging business problems</strong> by using data science tools. Among what I will bring to your company I want to mention.
+            </p>
         </div>
-        <div class="col-md-12 col-lg-4">
-            <img class="img-fluid" src="{% static '/images/yeison.png' %}" alt="photo">
-            <h3 class="text-center primary rounded p-2 my-1">Learning</h3>
-        </div>
-        <div class="col-md-12 col-lg-4 text-lg-end">
-            <h3 class="secondary rounded p-2 text-center">Data Science</h3>
-            <ul class="list-group">
-                <li class="fs-6 lh-base list-group-item primary">Python</li>
-                <li class="fs-6 lh-base list-group-item primary">Pandas</li>
-                <li class="fs-6 lh-base list-group-item primary">Numpy</li>
-                <li class="fs-6 lh-base list-group-item primary">Matplotlib</li>
-                <li class="fs-6 lh-base list-group-item primary">Seaborn</li>
-                <li class="fs-6 lh-base list-group-item primary">Sklearn</li>
-                <li class="fs-6 lh-base list-group-item primary">Anaconda</li>
-                <li class="fs-6 lh-base list-group-item primary">Jupyter lab</li>
-                <li class="fs-6 lh-base list-group-item primary">Colab </li>
-                <li class="fs-6 lh-base list-group-item primary">ML</li>
-            </ul>
-            <h3 class="text-center primary rounded p-2 my-1">Innovating</h3>
+        <div class="col-12 col-lg-6">
+            <div class="d-flex flex-wrap">
+                <div class="skills__skill">HTML</div>
+                <div class="skills__skill">CSS</div>
+                <div class="skills__skill">JavaScript</div>
+                <div class="skills__skill">Bootstrap</div>
+                <div class="skills__skill">Python</div>
+                <div class="skills__skill">GIT</div>
+                <div class="skills__skill">Github</div>
+                <div class="skills__skill">Responsive Design</div>
+                <div class="skills__skill">Pandas</div>
+                <div class="skills__skill">Terminal</div>
+                <div class="skills__skill">Numpy</div>
+                <div class="skills__skill">Scikit-learn</div>
+                <div class="skills__skill">Keras</div>
+                <div class="skills__skill">SQL</div>
+                <div class="skills__skill">PostgreSQL</div>
+                <div class="skills__skill">MySQL</div>
+                <div class="skills__skill">Linux - Ubuntu</div>
+                <div class="skills__skill">Django</div>
+                <div class="skills__skill">Django Rest Framework</div>
+                <div class="skills__skill">Flask</div>
+                <div class="skills__skill">Azure</div>
+                <div class="skills__skill">Machine Learning</div>
+                <div class="skills__skill">Deep Learning</div>
+            </div>
         </div>
     </div>
     
-    <div id="cookie-banner">
+    <!-- <div id="cookie-banner">
         <p>
             This website uses cookies to ensure you get the best experience on our website.
         </p>
@@ -78,39 +76,11 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-primary">Accept</button>
         </form>
-    </div>
+    </div> -->
 </main>
 {% endblock %}
 {% block footer %}
-<footer id="footer-index" class="container-fluid p-5">
-    <div class="row">
-        <div class="col-12 col-lg-5 offset-lg-1">
-            <h3>Contact Info</h3>
-            <ul>
-                <li>Phone: +57 323-250-18-77</li>
-                <li>Email:yliscanoc@gmail.com</li>
-            </ul>
-        </div>
-        <div class="col-12 col-lg-5">
-            <h3>Contact form</h3>
-            <form action="" class="form-control border-0" id="form-contact">
-                <div class="row">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Subject" aria-label="First name">
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Email" aria-label="Last name">
-                    </div>
-                </div>
-                <div class="my-3">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<footer id="footer-index" class="container-fluid p-2">
     <p class="text-center mt-2">Full-Stack Copilot &copy; 2022</p>
 </footer>
 {% endblock %}

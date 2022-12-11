@@ -12,6 +12,9 @@
     background-color:var(--btn-secondary);
     color:var(--font-color-6);
 } */
+a i {
+    color: var(--font-color-6);
+} 
 
 .input-group-text input{
     background-color:gray;

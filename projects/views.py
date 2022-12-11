@@ -232,7 +232,8 @@ def add_tasks(request, id):
     if request.POST.get('tasks') and file.validator(request.POST['tasks']):
         project.todo = file.addLines(request.POST['tasks'],'ToDo', project.todo, request.session['user_id'])
         project.save()
-        return JsonResponse({'status': 'success','lines': request.POST['tasks'].split("\r\n"), 'id_project': id})
+        num_lines_before = len(file.lines)
+        return JsonResponse({'status': 'success','lines': request.POST['tasks'].split("\r\n"), 'id_project': id, 'num_lines_before': num_lines_before})
     return JsonResponse({'status': 'error'})
 
 def add_requirements(request, id):
@@ -244,5 +245,6 @@ def add_requirements(request, id):
     if request.POST.get('requirements') and  file.validator(request.POST['requirements']):
         project.requirements = file.addLines(request.POST['requirements'],'requirements', project.requirements, request.session['user_id'])
         project.save()
-        return JsonResponse({'status': 'success','lines': request.POST['requirements'].split("\r\n"), 'id_project': id})
+        num_lines_before = len(file.lines)
+        return JsonResponse({'status': 'success','lines': request.POST['requirements'].split("\r\n"), 'id_project': id, 'num_lines_before': num_lines_before})
     return JsonResponse({'status': 'error'})

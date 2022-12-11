@@ -1,46 +1,50 @@
 import csrftoken from "./get_cookie.js"; 
-import {updateToDO, updateRequirements, addLi, showForm, addRequirement, addTask, addRequirementFieldInfo, addTaskFieldInfo} from "./project-features.js";
+import {addRequirement, addTask, addRequirementFieldInfo, addTaskFieldInfo} from "./project-features.js";
 
 function deleteRequirements(){
-  $(".delete-requirement").each((index, element)=> {
-    $(element).on("click", (e)=> {
+  let requirements = document.getElementsByClassName("delete-requirement");
+  for (let i = 0; i < requirements.length; i++) {
+    requirements[i].onclick = (e)=> {
       e.preventDefault();
-      let href = $(element).attr("href");
-      $.ajax({
-        url: href,
-        success: function(data) {
-          $("#requirements-list").html("");
-          data.lines.forEach((line, index) => {
-            $("#requirements-list").append(addRequirement(data, line, index));
-          });
-        }
+      let href = requirements[i].getAttribute("href");
+      fetch(href, {method: "POST",headers: {"X-CSRFToken": csrftoken}})
+      .then(response => response.json())
+      .then(data => {
+        $("#requirements-list").html("");
+        data.lines.forEach((line, indexList ) => {
+          $("#requirements-list").append(addRequirement(data, line, indexList ));
+        });
       });
-      addFeatures();
+      deleteRequirements();
       return false;
-    });
-  });
+    }
+  }
 };
 
 
 function deleteTasks(){
-  $(".delete-task").each((index, element)=> {
-    $(element).on("click", (e)=> {
+  let tasks = document.getElementsByClassName("delete-task");
+  for (let i = 0; i < tasks.length; i++) {
+    tasks[i].onclick = (e)=> {
       e.preventDefault();
-      let href = $(element).attr("href");
-      $.ajax({
-        url: href,
-        success: function(data) {
-          $("#tasks-list").html("");
-          data.lines.forEach((line, index) => {
-            $("#tasks-list").append(addTask(data, line, index));
-          });
-        }
+      let href = tasks[i].getAttribute("href");
+      fetch(href, {method: "POST",headers: {"X-CSRFToken": csrftoken}})
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("tasks-list").innerHTML = "";
+        data.lines.forEach((line, indexList ) => {
+          $("#tasks-list").append(addTask(data, line, indexList));
+        });
       });
-      addFeatures();
+      deleteTasks();
       return false;
-    });
-  });
-}
+    }
+  }
+};
+
+deleteRequirements();
+deleteTasks();
+
 //tasks form
 function addTasks(){
   let formTasks = document.getElementById("formAddTasks");
@@ -60,6 +64,7 @@ function addTasks(){
     });
     formTasks.innerHTML = "";
     addTaskButton.style.visibility = "visible";
+    deleteTasks();
   }
     return false;
 }
@@ -83,6 +88,7 @@ function addRequirements(){
     });
     formRequirements.innerHTML = "";
     addRequirementsButton.style.visibility = "visible";
+    deleteRequirements();
   }
   return false;
 }

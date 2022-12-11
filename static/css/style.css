@@ -81,6 +81,10 @@ header .navbar .navbar-brand, header .navbar .navbar-nav .nav-link, header .navb
 
 }
 
+a i {
+    color: var(--font-color-6);
+}
+
 .switch {
     background:var(--primary-10);
     border-radius: 10px 10px 10px 10px;
