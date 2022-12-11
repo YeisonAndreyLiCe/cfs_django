@@ -70,8 +70,8 @@
                         <p class="ml-2" id="requirement-info-{{requirement.id}}">{{ requirement.description }}</p>
                         {% if requirement.id != 'error' %}
                         <div class="d-flex flex-wrap justify-content-between">
-                            <a href="{% url 'projects:update_feature' id=requirement.id file='requirements' status=requirement.complete|yesno:'Completed,Not Completed' id_project=project.id %}" class="update-feature btn btn-block {{ requirement.complete|yesno:'secondary, primary' }} btn-sm">{{ requirement.complete|yesno:'Completed,Not Completed' }}</a>
-                            <a href="{% url 'projects:delete_feature' id=requirement.id file_class='requirements' id_project=project.id %}" class="delete-feature btn btn-block btn-danger btn-sm">Delete</a>
+                            <button class="btn primary btn-sm mx-2"> version {{requirement.version}}</button>
+                            <a href="{% url 'projects:delete_feature' id=requirement.id file_class='requirements' id_project=project.id %}" class="delete-requirement btn btn-block btn-danger btn-sm">Delete</a>
                         </div>
                         {% endif %}
                     </div>
@@ -95,8 +95,8 @@
                             <p class="ml-2" id="ToDo-info-{{todo.id}}">{{ todo.description }}</p>
                             {% if todo.id != 'error' %}
                             <div class="d-flex flex-wrap justify-content-between">
-                                <a href="{% url 'projects:update_feature' id=todo.id file='ToDo' status=todo.complete|yesno:'Completed,Not Completed' id_project=project.id %}" class="update-feature btn btn-block {{ todo.complete|yesno:'secondary, primary' }} btn-sm">{{ todo.complete|yesno:'Completed,Not Completed' }}</a>
-                                <a href="{% url 'projects:delete_feature' id=todo.id file_class='ToDo' id_project=project.id %}" class="delete-feature btn btn-block btn-danger btn-sm">Delete</a>
+                                <button class="btn btn-block primary btn-sm">{{todo.version}}</button>
+                                <a href="{% url 'projects:delete_feature' id=todo.id file_class='ToDo' id_project=project.id %}" class="delete-task btn btn-block btn-danger btn-sm">Delete</a>
                             </div>
                             {% endif %}
                         </div>

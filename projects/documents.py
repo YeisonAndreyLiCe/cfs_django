@@ -88,8 +88,13 @@ class File:
 class Artefact:
     def __init__(self, id ,description):
         self.id = id
-        self.description = description
+        self.description = description.split("--version")[0]
         self.completed = False
+
+        try:
+            self.version = description.split("--version")[1]
+        except:
+            self.version = "last version"
 
     def complete(self):
         if '- Completed' in self.description:

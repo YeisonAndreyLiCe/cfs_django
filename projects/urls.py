@@ -10,12 +10,16 @@ urlpatterns = [
     path('<int:id>/edit', views.edit, name='edit_project'),
     path('<int:id>/update', views.update, name='update_project'),
     path('<int:id>/delete', views.delete, name='delete_project'),
-    path('delete_feature/<int:id>/<str:file_class>/<int:id_project>', views.delete_feature, name='delete_feature'),
+    path('delete/requirement/<int:id>/<int:id_project>', views.delete_requirement, name='delete_requirement'),
+    path('delete/task/<int:id>/<int:id_project>', views.delete_task, name='delete_task'),
     path('update_feature/<int:id>/<str:file>/<str:status>/<int:id_project>', views.update_feature, name='update_feature'),
     path('add_features/<str:file_class>', views.add_features, name='add_features'),
+    path('add_tasks/<int:id>', views.add_tasks, name='add_tasks'),
+    path('add_requirements/<int:id>', views.add_requirements, name='add_requirements'),
     path('add_user_flow_image', views.add_user_flow_image, name='add_user_flow_image'),
     path('<int:id>/delete_user_flow_image', views.delete_user_flow_image, name='delete_user_flow_image'),
     path('<int:id>/add_wireframe', views.add_wireframe, name='add_wireframe'),
     path('<int:id>/delete_wireframe', views.delete_wireframe, name='delete_wireframe'),
     path('public_projects', views.public_projects, name='public_projects'),
+    
 ]
