@@ -24,10 +24,8 @@ export const addTask = (data, line, index) => {
     <li id="ToDo-${index}" class="list-group-item artefact ${data.status=="complete" ? "done":"artefact"}">
       <div class="d-flex flex-wrap justify-content-between">
         <p class="ml-2" id="ToDo-info-${index}">${line}</p>
-        <div class="d-flex flex-wrap justify-content-between">
-        <a href="/projects/update_feature/${index}/task/Not Completed/${data.id_project}" class="update-feature btn btn-block" }
-        </a>
-        <a href="/projects/delete/task/${index}/${data.id_project}" class="delete-task btn btn-block btn-danger btn-sm">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <a href="/projects/delete/task/${index}/${data.id_project}" class="delete-task btn btn-block btn-danger btn-sm" onclick="deleteTasks()">
                 Delete
         </a>
         </div>
@@ -41,9 +39,9 @@ export const addRequirement = (data, line, index) => {
     <li id="requirement-${index}" class="list-group-item artefact">
       <div class="d-flex flex-wrap justify-content-between">
         <p class="ml-2" id="requirement-info-${index}">${line.split("--version")[0]}</p>
-        <div class="d-flex flex-wrap justify-content-between">
-        <button class="btn primary mx-2"> ${line.split("--version")[1]? "version" + line.split("--version")[1]: "last version"} </button>
-        <a href="/projects/delete/requirement/${index}/${data.id_project}" class="delete-requirement btn btn-block btn-danger btn-sm">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <button class="btn btn-sm primary mx-2"> ${line.split("--version")[1]? "version" + line.split("--version")[1]: "last version"} </button>
+        <a href="/projects/delete/requirement/${index}/${data.id_project}" class="delete-requirement btn btn-block btn-danger btn-sm" >
             Delete
         </a>
         </div>

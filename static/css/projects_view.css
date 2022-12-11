@@ -1,0 +1,23 @@
+.artefact{
+    background-color:var(--primary-8);
+    color:var(--font-color-10);
+    border:1px solid var(--primary-10);
+}
+.primary{
+    background-color:var(--btn-primary);
+    color:var(--font-color-10);
+}
+
+.secondary{
+    background-color:var(--btn-secondary);
+    color:var(--font-color-6);
+}
+.done{
+    background-color:var(--primary-8-alpha);
+    color:var(--font-color-6);
+}
+.task-done{
+    background-color:var(--primary-8-alpha);
+    color:var(--font-color-6);
+    text-decoration: line-through;
+}

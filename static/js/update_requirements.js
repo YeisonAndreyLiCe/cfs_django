@@ -15,7 +15,6 @@ function deleteRequirements(){
           $("#requirements-list").append(addRequirement(data, line, indexList ));
         });
       });
-      deleteRequirements();
       return false;
     }
   }
@@ -36,14 +35,13 @@ function deleteTasks(){
           $("#tasks-list").append(addTask(data, line, indexList));
         });
       });
-      deleteTasks();
       return false;
     }
   }
 };
 
-deleteRequirements();
-deleteTasks();
+/* deleteRequirements();
+deleteTasks(); */
 
 //tasks form
 function addTasks(){
@@ -64,7 +62,7 @@ function addTasks(){
     });
     formTasks.innerHTML = "";
     addTaskButton.style.visibility = "visible";
-    deleteTasks();
+    //deleteTasks();
   }
     return false;
 }
@@ -88,7 +86,7 @@ function addRequirements(){
     });
     formRequirements.innerHTML = "";
     addRequirementsButton.style.visibility = "visible";
-    deleteRequirements();
+    //deleteRequirements();
   }
   return false;
 }
@@ -116,3 +114,4 @@ addTaskButton.onclick = ()=> {
   addTasks();
   return false;
 }
+

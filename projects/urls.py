@@ -6,7 +6,7 @@ app_name = 'projects'
 urlpatterns = [
     path('<int:id>/new_project', views.new_project, name='new_project'),
     path('create_project', views.create_project, name='create_project'),
-    path('projects_templates', views.projects_templates, name='projects_templates'),
+    #path('projects_templates', views.projects_templates, name='projects_templates'),
     path('<int:id>/edit', views.edit, name='edit_project'),
     path('<int:id>/update', views.update, name='update_project'),
     path('<int:id>/delete', views.delete, name='delete_project'),
@@ -21,5 +21,6 @@ urlpatterns = [
     path('<int:id>/add_wireframe', views.add_wireframe, name='add_wireframe'),
     path('<int:id>/delete_wireframe', views.delete_wireframe, name='delete_wireframe'),
     path('public_projects', views.public_projects, name='public_projects'),
-    
+    path('public_projects/<int:id>', views.view_public_project, name='view_public_project'),
+    path('view_project/<int:project_id>', views.view_project, name='view_project')
 ]

@@ -1,126 +1,37 @@
 {% extends 'base.html' %}
-{% block title %} cfs|Login{% endblock %}
+{% block title %} cfs | Public Projects {% endblock %}
 
 {% block css %}
 {{ block.super }}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/projects_templates.css' %}">
-<style>
-    @media screen and (min-width: 768px) and (max-width: 991px){
-        .project-container:nth-child(even){
-            display: flex;
-            flex-direction: column;
-        }
-        .project-container:nth-child(even) .project-info{
-            margin-right: 0;
-            margin-left: 0;
-        }
-        .project-container .project-img{
-            padding: 0px;
-            border-radius: 6px 6px 0px 0px;
-        }
-    
-        .project-container .project-info{
-            border-radius: 0px 0px 6px 6px;
-        }
-    }
-    @media (min-width: 992px){
-        .main{
-            padding: 50px;
-        }
-        .project-container{
-            display: grid;
-            grid-template-columns: repeat(1fr, 12);
-        }
-        .project-container:nth-child(even) .project-info{
-            grid-column: 2 / 7;
-            grid-row: 1;
-            margin-right: -100px;
-            margin-left: 0;
-        }
-    
-        .project-container:nth-child(odd) .project-info{
-            grid-column: 7 / 12;
-            grid-row: 1;
-            margin-right: 0;
-            margin-left: -100px;
-        }
-        .project-container:nth-child(even) .project-img{
-            grid-column: 7 / 12;
-            grid-row: 1;
-            padding: 0px;
-            border-radius: 6px 6px 0px 0px;
-        }
-    
-        .project-container:nth-child(odd) .project-img{
-            grid-column: 2 / 7;
-            grid-row: 1;
-            padding: 0px;
-            border-radius: 6px 6px 0px 0px;
-        }
-    
-        .project-info{
-            background-color:var(--primary-10);
-            border-radius: 6px 6px 0px 0px;
-        }
-        .project-container .project-img{
-            max-width: 1000px;
-            border-radius: 0px 0px 6px 6px;
-        }
-    }    
-</style>
+<link rel="stylesheet" href="{% static 'css/projects_preview.css' %}">
 {% endblock %}
-
 {% block content %}
 <main class="container-fluid main my-5"> 
-    <h1 class="text-center"> welcome {{ user.first_name }} {{ user.last_name }} </h1>
-    {% if not projects %}  
-            <p class="px-5 py-3"> 
-                you have no projects yet. To create a project click on the template below, you can also create a project from the new project section. You will be asked to fill in details about your project.
-            </p>
-            <div class="project-container" >
-                <div class="project-img">
-                    <a href="/users/new_user_project">
+    <h1 class="text-center"> Public Projects </h1>
+    {% for project in projects %}
+        <div class="project-container" >
+            <div class="project-img">
+                <a href="{% url 'projects:view_public_project' id=project.id %}">
+                    {% if project.wireframe %}
+                        <img src="{{ project.wireframe.url }}" alt="project image" class="img-fluid">
+                    {% else %}
                         <img src="{% static 'images/pexels-picjumbocom-196644.jpg' %}" alt="template image" class="img-fluid">
-                    </a>
-                </div>
-                <div class="project-info">
-                    <p class="text-white-50">project features</p>
-                    <h1 class="text-info align-end">
-                        <a href="/users/new_user_project" class="nav-link"> Project Name</a>
-                    </h1>
-                    <p>
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus autem distinctio laborum praesentium vel. Dolores qui at quibusdam iure, placeat excepturi vero temporibus quae odio rerum laudantium tenetur saepe sit!
-                    </p>
-                    <p>
-                        <a href="https://www.pexels.com/fr-fr/photo/papier-d-imprimante-blanc-196645/" target="_blank" class="nav-link">Photo de picjumbo.com</a>
-                    </p>
-                    
-                </div>
+                    {% endif %}
+                </a>
             </div>
-    {% else %}
-        {% for project in projects %}
-            <div class="project-container" >
-                <div class="project-img">
-                    <a href="/users/{{user.id}}/view_project/{{projects.id}}">
-                        {% if project.wireframe %}
-                            <img src="{{ project.wireframe.url }}" alt="project image" class="img-fluid">
-                        {% else %}
-                            <img src="{% static 'images/pexels-picjumbocom-196644.jpg' %}" alt="template image" class="img-fluid">
-                        {% endif %}
-                    </a>
-                </div>
-                <div class="project-info">
-                    <p class="text-white-50">project features</p>
-                    <h1 class="text-info align-end"> <a href="/users/{{user.id}}/view_project/{{project.id}}" class="nav-link" >{{project.name}}</a></h1>
-                    {{project.description}}
-                    <p>
-                        <a href="/users/{{user.id}}/view_project/{{project.id}}" class="btn btn-success">View Project</a>
-                    </p>
-                </div>
+            <div class="project-info">
+                <p class="text-white-50">project owner {{project.owner}}</p>
+                <h1 class="text-info align-end"> 
+                    <a href="{% url 'projects:view_public_project' id=project.id %}" class="nav-link" >{{project.name}}</a>
+                </h1>
+                <p class="lh-base fs-6">{{ project.description | truncatechars:200 }}</p>
+                <p class="mt-2">
+                    <a href="{% url 'projects:view_public_project' id=project.id %}" class="btn primary">View Project</a>
+                </p>
             </div>
-        {% endfor %}
-    {% endif %}
+        </div>
+    {% endfor %}
 </main>
 {% endblock %}
-

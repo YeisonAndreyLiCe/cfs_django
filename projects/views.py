@@ -16,6 +16,34 @@ def projects_templates(request):
         #os.makedirs(path)
     return render(request, 'projects/projects_templates.html')
 
+def view_project(request, project_id):
+    if 'user_id' not in request.session:
+        return redirect(reverse("projects:view_project", args=(project_id,)))
+    project = get_object_or_404(Project, id=project_id)
+    requirements = File()
+    todo = File()
+    requirements = requirements.openFile('requirements',project.requirements)
+    to_dos = todo.openFile('ToDo',project.todo)
+    context = {
+        'project': project,
+        'requirements' : [Artefact(key, value) for key, value in requirements.items()],
+        'to_dos' : [Artefact(key, value) for key, value in to_dos.items()],
+    }
+    return render(request, 'users/view_user_project.html', context)
+
+def view_public_project(request, id):
+    project = get_object_or_404(Project, id=id)
+    requirements = File()
+    todo = File()
+    requirements = requirements.openFile('requirements',project.requirements)
+    to_dos = todo.openFile('ToDo',project.todo)
+    context = {
+        'project': project,
+        'requirements' : [Artefact(key, value) for key, value in requirements.items()],
+        'to_dos' : [Artefact(key, value) for key, value in to_dos.items()],
+    }
+    return render(request, "projects/view_public_project.html", context)
+
 def new_project(request,id):
     if 'user_id' not in request.session:
         return redirect(reverse("pre_login:login"))
@@ -56,10 +84,10 @@ def create_project(request):
             owner = User.objects.get(id=request.session['user_id'])
         )
         project.save()
-        route = reverse("users:view_project", args=(request.session["user_id"], project.id))    #'/users/'+str(request.session['user_id'])+'/view_project/'+str(project.id)
+        route = reverse("projects:view_project", args=(project.id,))    #'/users/'+str(request.session['user_id'])+'/view_project/'+str(project.id)
         return JsonResponse({'route': route})
             
-    return redirect(reverse("users:new_user_project"))
+    return redirect(reverse("projects:view_project", args=(request.POST["id_project"],)))
 
 def edit(request, id):
     if 'user_id' not in request.session:
@@ -99,7 +127,7 @@ def update(request, id):
         project.save()
         #project.wireframe = request.FILES['wireframe']
         #project.user_flow_image = request.FILES['user_flow_image']
-        route = reverse("users:view_project", args=(request.session["user_id"], project.id))    #f"/users/{request.session['user_id']}/view_project/{project.id}"
+        route = reverse("projects:view_project", args=(project.id,) )   #f"/users/{request.session['user_id']}/view_project/{project.id}"
         return JsonResponse({'route': route})
     return redirect(reverse("projects:edit_project", args=(request.session["user_id"], id)))  
 
@@ -119,7 +147,7 @@ def delete(request, id):
     except ValueError:
         pass
     project.delete()
-    return redirect(reverse("users:projects", args=(request.session["user_id"],)))  
+    return redirect(reverse("users:projects"))  
 
 
 def update_feature(request, id, file, status, id_project):
@@ -168,7 +196,8 @@ def delete_requirement(request, id, id_project):
     file = File()
     file.openFile('requirements',project.requirements)
     file.deleteLine(int(id),'requirements', project.requirements)
-    return JsonResponse({'type': 'requirements', 'id': id,'lines':file.lines, 'id_project': id_project})
+    return redirect(reverse("projects:view_project", args=(id_project,)))
+    #return JsonResponse({'type': 'requirements', 'id': id,'lines':file.lines, 'id_project': id_project})
 
 def delete_task(request, id, id_project):
     if 'user_id' not in request.session:
@@ -177,7 +206,8 @@ def delete_task(request, id, id_project):
     file = File()
     file.openFile('ToDo',project.todo)
     file.deleteLine(int(id),'ToDo', project.todo)
-    return JsonResponse({'type': 'ToDo', 'id': id,'lines':file.lines, 'id_project': id_project})
+    return redirect(reverse("projects:view_project", args=(id_project,)))
+    #return JsonResponse({'type': 'ToDo', 'id': id,'lines':file.lines, 'id_project': id_project})
 
 
 def add_user_flow_image(request):
@@ -189,7 +219,7 @@ def add_user_flow_image(request):
         project.save()
     except:
         pass
-    return redirect(reverse("users:view_project", args=(request.session['user_id'],request.POST["id_project"],)))
+    return redirect(reverse("projects:view_project", args=(request.POST["id_project"],)))
 
 def delete_user_flow_image(request, id):
     if 'user_id' not in request.session:
@@ -198,7 +228,7 @@ def delete_user_flow_image(request, id):
     os.remove(project.user_flow_image.path)
     project.user_flow_image = ""
     project.save()
-    return redirect(reverse("users:view_project", args=(request.session['user_id'],id,)))
+    return redirect(reverse("projects:view_project", args=(id,)))
 
 def add_wireframe(request, id):
     if 'user_id' not in request.session:
@@ -209,7 +239,7 @@ def add_wireframe(request, id):
         project.save()
     except:
         pass
-    return redirect(reverse("users:view_project", args=(request.session['user_id'],id,)))
+    return redirect(reverse("projects:view_project", args=(id,)))
 
 def delete_wireframe(request, id):
     if 'user_id' not in request.session:
@@ -218,7 +248,7 @@ def delete_wireframe(request, id):
     os.remove(project.wireframe.path)
     project.wireframe = ""
     project.save()
-    return redirect(reverse("users:view_project", args=(request.session['user_id'],id,)))
+    return redirect(reverse("projects:view_project", args=(id,)))
 
 def public_projects(request):
     projects = Project.objects.filter(public_status=True)
@@ -233,7 +263,8 @@ def add_tasks(request, id):
         project.todo = file.addLines(request.POST['tasks'],'ToDo', project.todo, request.session['user_id'])
         project.save()
         num_lines_before = len(file.lines)
-        return JsonResponse({'status': 'success','lines': request.POST['tasks'].split("\r\n"), 'id_project': id, 'num_lines_before': num_lines_before})
+        lines = [i.strip() for i in request.POST['tasks'].split("\r\n") if i!=""]
+        return JsonResponse({'status': 'success','lines': lines, 'id_project': id, 'num_lines_before': num_lines_before})
     return JsonResponse({'status': 'error'})
 
 def add_requirements(request, id):
@@ -246,5 +277,7 @@ def add_requirements(request, id):
         project.requirements = file.addLines(request.POST['requirements'],'requirements', project.requirements, request.session['user_id'])
         project.save()
         num_lines_before = len(file.lines)
-        return JsonResponse({'status': 'success','lines': request.POST['requirements'].split("\r\n"), 'id_project': id, 'num_lines_before': num_lines_before})
+        lines = [i.strip() for i in request.POST['requirements'].split("\r\n") if i!=""]
+        return JsonResponse({'status': 'success','lines': lines, 'id_project': id, 'num_lines_before': num_lines_before})
     return JsonResponse({'status': 'error'})
+

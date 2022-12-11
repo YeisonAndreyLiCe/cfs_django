@@ -10,7 +10,7 @@
 {% block content %}
     <main class="container d-flex justify-content-center my-5">
         <div class="form-group rounded p-3">
-            <form action="/register_user/" method="POST" id="form" >
+            <form action="{% url 'pre_login:register_user' %}" method="POST" id="form" >
                 {% csrf_token %}
                 <h1 class="text-center">Sing Up</h1>
                 <div class="mb-3">
@@ -44,7 +44,7 @@
                     </svg> Sign up with Google
                 </a>
                 <div class="mb-3">
-                    <a href="/login/" class="btn btn-lg secondary">Login</a>
+                    <a href="{% url 'pre_login:login' %}" class="btn btn-lg secondary">Login</a>
                 </div>
             </form>
         </div>

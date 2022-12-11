@@ -42,20 +42,19 @@ def register_user(request):
                 password = pw_hash
             )
             request.session['user_id'] = user.id
-            route = reverse("users:projects", args=(user.id,)) 
+            route = reverse("users:projects") 
             return JsonResponse({'route': route})
     else:
         return redirect(reverse('pre_login:register'))
 
 def login_user(request):
-    print(request.POST)
     if request.method == 'POST':
         user = User.objects.filter(email=request.POST['email'])
         if user:
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
-                route = reverse('users:projects', args=(logged_user.id,))  #'/users/'+str(logged_user.id)+'/projects'
+                route = reverse('users:projects')  #'/users/'+str(logged_user.id)+'/projects'
                 return JsonResponse({'route': route})
             else:
                 return JsonResponse({'error': 'Invalid Password'})

@@ -55,7 +55,7 @@
                     <textarea class="form-control" id="todoList" rows="5" name="todo" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)">{{todoList}}</textarea>
                 </div>
                 <button type="submit" class="btn primary m-3">Submit</button>
-                <a href="{% url 'users:view_project' request.session.user_id project.id %}"  class="btn secondary">View Project</a>
+                <a href="{% url 'projects:view_project'  project.id %}"  class="btn secondary">View Project</a>
                 <a href="{% url 'projects:delete_project' id=project.id %}" class="btn secondary">Delete Project</a>
             </form>
         </div>
