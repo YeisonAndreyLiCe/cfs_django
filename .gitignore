@@ -183,3 +183,4 @@ static/js/view_project.js
 static/js/update.js
 pre_login/static
 README.md
+users/templates/users/view_project.html
