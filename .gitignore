@@ -178,6 +178,7 @@ cfs_project/settings.py
 static/js/package-lock.json
 static/js/package.json
 static/js/.eslintrc.json
+static/admin/
 static/js/node_modules
 static/js/view_project.js
 static/js/update.js
