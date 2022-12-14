@@ -69,10 +69,17 @@ def create_project(request):
             wireframe = None
         else:
             wireframe = request.FILES['wireframe']
-        if not 'user_flow_image' in request.FILES:
+        if not 'user_flow_image' in request.POST:
+            user_flow_image = None
+        else:
+            video_id = request.POST['user_flow_image'].split("/")[-1]
+            #project.user_flow_image = request.POST['user_flow_image']
+            user_flow_image  = video_id
+            #user_flow_image = request.POST['user_flow_image']
+        """ if not 'user_flow_image' in request.FILES:
             user_flow_image = None
         else:  
-            user_flow_image = request.FILES['user_flow_image']
+            user_flow_image = request.FILES['user_flow_image'] """
         project = Project.objects.create(
             name = request.POST['name'],
             public_status = request.POST['public_status'],
@@ -214,8 +221,11 @@ def add_user_flow_image(request):
     if 'user_id' not in request.session:
         return redirect(reverse("pre_login:login"))
     project = get_object_or_404(Project, id=request.POST['id_project']) # Project.objects.get(id=request.POST['id_project'])
+    print(request.POST)
     try:
-        project.user_flow_image = request.FILES['user_flow_image']
+        video_id = request.POST['user_flow_image'].split("/")[-1]
+        #project.user_flow_image = request.POST['user_flow_image']
+        project.user_flow_image = video_id
         project.save()
     except:
         pass
@@ -225,7 +235,7 @@ def delete_user_flow_image(request, id):
     if 'user_id' not in request.session:
         return redirect(reverse("pre_login:login"))
     project =  get_object_or_404(Project, id=id)
-    os.remove(project.user_flow_image.path)
+    #os.remove(project.user_flow_image.path)
     project.user_flow_image = ""
     project.save()
     return redirect(reverse("projects:view_project", args=(id,)))

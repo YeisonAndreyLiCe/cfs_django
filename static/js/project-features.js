@@ -25,7 +25,7 @@ export const addTask = (data, line, index) => {
       <div class="d-flex flex-wrap justify-content-between">
         <p class="ml-2" id="ToDo-info-${index}">${line}</p>
         <div class="d-flex flex-wrap justify-content-between align-items-center">
-        <a href="/projects/delete/task/${index}/${data.id_project}" class="delete-task btn btn-block btn-danger btn-sm" onclick="deleteTasks()">
+        <a href="/projects/delete/task/${index}/${data.id_project}" class="delete-task btn btn-block btn-danger btn-sm mx-1" onclick="deleteTasks()">
                 Delete
         </a>
         </div>
@@ -40,7 +40,7 @@ export const addRequirement = (data, line, index) => {
       <div class="d-flex flex-wrap justify-content-between">
         <p class="ml-2" id="requirement-info-${index}">${line.split("--version")[0]}</p>
         <div class="d-flex flex-wrap justify-content-between align-items-center">
-        <button class="btn btn-sm primary mx-2"> ${line.split("--version")[1]? "version" + line.split("--version")[1]: "last version"} </button>
+        <button class="btn btn-sm primary mx-2"> ${line.split("--version")[1]? line.split("--version")[1]: "last version"} </button>
         <a href="/projects/delete/requirement/${index}/${data.id_project}" class="delete-requirement btn btn-block btn-danger btn-sm" >
             Delete
         </a>
@@ -95,6 +95,7 @@ export const addRequirementFieldInfo = ()=>{
   return(
   `<div class="form-group
     <label for="input_requirement" class="h3 my-2">New Requirement </label>
+    <div id="emailHelp my-3" class="form-text">To specify the version of the requirement add the version after --version. e.g pandas --version 1.5.2 </div>
     <textarea name="requirements" class="form-control" id="input_requirement" rows="1" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
   </div>
   <input type="submit" value="Add" class="btn primary my-2">`

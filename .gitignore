@@ -184,3 +184,8 @@ static/js/update.js
 pre_login/static
 README.md
 users/templates/users/view_project.html
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+static/images/
+!.elasticbeanstalk/*.global.yml

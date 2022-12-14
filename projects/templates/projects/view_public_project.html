@@ -55,7 +55,7 @@
         </div>
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
-                <h2 class="text-center">Features List</h2>
+                <h2 class="text-center">Features or Indications</h2>
                 <ul class="list-group" id="tasks-list">
                     {% for todo in to_dos %}
                     <li id="ToDo-{{todo.id}}" class="list-group-item artefact">
@@ -70,7 +70,11 @@
         <div class="row my-3">
             <div class=" col-lg-10 offset-lg-1 d-flex flex-column align-items-center">
                 {% if project.user_flow_image != '' %}
-                    <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid">
+                    <h3 class="text-center my-5">Video Tutorial</h3>
+                    <div class="ratio ratio-16x9">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{project.user_flow_image}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <!-- <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid"> -->
                 {% endif %}
             </div>
         </div>

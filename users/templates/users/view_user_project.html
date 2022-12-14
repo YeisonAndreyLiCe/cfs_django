@@ -22,12 +22,12 @@
             <div class="d-flex flex-column align-items-center">
                 <img src="{{project.wireframe.url}}" alt="project wireframe" class="img-fluid">
                 <div>
-                    <a href="{% url 'projects:delete_wireframe' id=project.id %}" class="btn btn-danger mt-2">Delete Wireframe</a>
+                    <a href="{% url 'projects:delete_wireframe' id=project.id %}" class="btn btn-danger mt-2">Delete Image</a>
                 </div>
             </div>
             {% else %}
                 <div id="projectWireframe">
-                    <button id="addWireframe" class="btn primary">Add Wireframe</button>
+                    <button id="addWireframe" class="btn primary">Add Image</button>
                 </div>
                 <script>
                     document.getElementById('addWireframe').addEventListener('click', function(e){
@@ -37,7 +37,7 @@
                                 {% csrf_token %}
                                 <label for="wireframe" class="fw-bold">User Flow Image</label>
                                 <input type="file" name="wireframe" id="wireframe">
-                                <input type="submit" value="Add Wireframe" class="btn primary">
+                                <input type="submit" value="Add Image" class="btn primary">
                             </form>
                         `;
                     });
@@ -84,7 +84,7 @@
         </div>
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
-                <h2 class="text-center">Features List</h2>
+                <h2 class="text-center">Features or Indications</h2>
                 <ul class="list-group" id="tasks-list">
                     {% for todo in to_dos %}
                     <li id="ToDo-{{todo.id}}" class="list-group-item {{todo_todo.complete|yesno:'task-done,artefact'}}">
@@ -108,15 +108,20 @@
             </div>           
         </div>
         <div class="row my-3">
+            <h3 class="text-center">Video Tutorial</h3>
             <div class=" col-lg-10 offset-lg-1 d-flex flex-column align-items-center">
                 {% if project.user_flow_image != '' %}
-                    <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid">
+                    <div class="ratio ratio-16x9">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{project.user_flow_image}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <!-- <img src="{{project.user_flow_image.url}}" alt="user flw" class="img-fluid"> -->
                     <div>
-                        <a href="{% url 'projects:delete_user_flow_image' id=project.id %}" class="btn btn-danger my-2"> Delete Image</a>
+                        <a href="{% url 'projects:delete_user_flow_image' id=project.id %}" class="btn btn-danger my-2"> Delete Video</a>
                     </div>
                 {% else %}
                     <div id="userFlowImage">
-                        <a href="#" id="addUserFlowImage" class="btn secondary">Add User Flow Image</a>
+                        <p class="text-center">Enter the URL from youtube otherwise the video will not play</p>
+                        <a href="#" id="addUserFlowImage" class="btn secondary">Add Video</a>
                         <script>
                             document.getElementById("addUserFlowImage").addEventListener("click", function(e){
                                 e.preventDefault();
@@ -124,9 +129,9 @@
                                 <form action="{% url 'projects:add_user_flow_image' %}" method="POST" class="form" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <input type="hidden" name="id_project" value="{{project.id}}">
-                                    <label for="user_flow_image fw-bold">User Flow Image</label>
-                                    <input type="file" name="user_flow_image" class="form-control-file" id="user_flow_image">
-                                    <input type="submit" value="Add" class="btn primary">
+                                    <label for="user_flow_image fw-bold">Youtube URL</label>
+                                    <input type="text" name="user_flow_image" class="form-control" id="user_flow_image" placeholder="https://youtu.be/7t6qJIXqQ9s">
+                                    <input type="submit" value="Add" class="btn primary mt-2">
                                 </form>
                                 `;
                             });
