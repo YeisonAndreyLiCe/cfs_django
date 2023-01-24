@@ -149,10 +149,10 @@ def delete(request, id):
         os.remove(project.wireframe.path)
     except ValueError:
         pass
-    try:
+    """ try:
         os.remove(project.user_flow_image.path)
     except ValueError:
-        pass
+        pass """
     project.delete()
     return redirect(reverse("users:projects"))  
 
