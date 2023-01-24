@@ -1,0 +1,43 @@
+<ul class="navbar-nav justify-content-between flex-grow-1 pe-3">
+    <li class="nav-item">
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item primary">
+                <a class="text-center" href="https://www.instagram.com/yeisonandreylice/" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </li>
+            <li class="list-group-item primary">
+                <a class="text-center" href="https://www.linkedin.com/in/yeison-andrey-lice/" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </li>
+            <li class="list-group-item primary">
+                <a class="text-center" href="https://www.twitter.com/yeisonandreylc" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </li>
+            <li class="list-group-item primary">
+                <a class="text-center" href="https://www.github.com/yeisonandreylice" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'projects:public_projects' %}">Public Projects</a></li>
+    {% if 'user_id' in request.session %}
+    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'users:projects' %}">My Projects</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'users:new_user_project' %}">New Project</a></li>
+    <li class="nav-item"><a class="nav-link" href="/logout">Logout </a></li>
+    {% else %}
+    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/login">Login</a></li>
+    {% endif %}
+    <li class="nav-item">
+        <div>
+            <button class="switch" id="theme-switcher">
+                <span><i class="fas fa-sun"></i></span>
+                <span><i class="fas fa-moon"></i></span>
+            </button>
+        </div>
+    </li>
+</ul>

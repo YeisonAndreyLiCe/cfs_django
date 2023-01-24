@@ -1,0 +1,19 @@
+<header class="navbar">
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid d-flex justify-content-center">
+            <a class="navbar-brand h1 border-radius-circle flex-fill" href="/">CFS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Full-Stack Copilot</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    {% include 'sections/ul_navbar.html' %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
