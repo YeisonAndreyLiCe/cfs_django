@@ -21,42 +21,7 @@
 <main class="container-fluid px-5">   
     <div class="row">
         <div class="col-12">
-            <form action="{% url 'projects:create_project' %}" id="form" method="post">
-                {% csrf_token %}
-                <div class="form-group m-3">
-                    <label class="fw-bold" for="project-status">Project Status</label>
-                    <select class="form-control" id="project-status" name="public_status">
-                        <option value="1">Public</option>
-                        <option value="0">Private</option>
-                    </select>
-                </div>
-                <div class="form-group m-3">
-                    <input type="text" class="form-control" id="projectName" placeholder="Project Name" name="name">
-                </div>
-                <div class="form-group m-3">
-                    <label class="fw-bold" for="project-description">Project Description</label>
-                    <textarea class="form-control" id="project-description" rows="1" name="description" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
-                </div>
-                <div class="from-group m-3">
-                    <label class="fw-bold text-center" for="image">Wireframe</label>
-                    <input type="file" class="form-control" id="image" name="wireframe">
-                </div>
-                <div class="from-group m-3">
-                    <label class="fw-bold" for="user_flow">video url on youtube</label>
-                    <input type="text" class="form-control" id="user_flow" name="user_flow_image" placeholder="https://youtu.be/wKXctcdKGu4">
-                    <!-- <input type="file" class="form-control" id="user_flow" name="user_flow_image"> -->
-                </div>
-                <div class="form-group m-3">
-                    <label class="fw-bold" for="requirements">Requirements</label>
-                    <div id="emailHelp my-3" class="form-text">To specify the version of the requirement add the version after --version. e.g pandas --version 1.5.2 </div>
-                    <textarea class="form-control" id="requirements" rows="1" name="requirements" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
-                </div>
-                <div class="form-group m-3">
-                    <label class="fw-bold" for="todoList">Project features</label>
-                    <textarea class="form-control" id="todoList" rows="1" name="todo" onkeydown="autoGrow(this)" onkeyup="autoGrow(this)"></textarea>
-                </div>
-                <button type="submit" class="btn primary m-3">Submit</button>
-            </form>
+            {% include 'projects/sections/form_new_project.html' %}
         </div>
     </div>
 </main>
