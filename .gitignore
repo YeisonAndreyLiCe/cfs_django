@@ -182,7 +182,7 @@ static/admin/
 static/js/node_modules
 static/js/view_project.js
 static/js/update.js
-pre_login/static
+#pre_login/static
 users/templates/users/view_project.html
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
