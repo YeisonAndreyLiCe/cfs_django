@@ -8,7 +8,7 @@ This app was created to show the projects I've worked on and the technologies I'
 - A project detail page with the project's info.
 - A home page with a list of the projects you've created.
 ![Home page](pre_login/static/images/cfs-project-lg-size.png)
-# Projects detail page
+## Projects detail page
 ![Project detail page](pre_login/static/images/project-dark-view.png)
 ## Responsive
 ![Responsive](pre_login/static/images/mobile_dark_view.png)
