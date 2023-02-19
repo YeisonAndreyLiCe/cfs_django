@@ -3,30 +3,32 @@ from django.db import models
 import re
 from users.models import User
 
+
+
 class ProjectManager(models.Manager):
     def validator(self, postData):
         errors = {}
-        if len(postData['name']) < 3:
+        if not postData.get('name') or len(postData.get('name')) < 3:
             errors["name"] = "Name should be at least 3 characters"
-        if len(postData['description']) < 10:
+        if not postData.get('description') or len(postData.get('description')) < 10:
             errors["description"] = "Description should be at least 10 characters"
-        """ if len(postData['wireframe']) < 3:
-            errors["wireframe"] = "Wireframe should be at least 3 characters"
-        if len(postData['user_flow_image']) < 3:
-            errors["user_flow_image"] = "User flow image should be at least 3 characters" """
         return errors
 
 class Project(models.Model):
-    name = models.CharField(max_length=100)
-    public_status = models.BooleanField(default=False)
-    description = models.CharField(max_length=1000)
-    requirements = models.CharField(max_length=1000, null=True)   
-    todo = models.CharField(max_length=1000, null=True)
-    wireframe = models.FileField(upload_to='wireframes/', blank=True, null=True)
-    user_flow_image = models.ImageField(upload_to='user_flows/', blank=True, null=True)
-    owner = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)
-    contributors = models.ManyToManyField(User, related_name='contributors')
-    favorite = models.ManyToManyField(User, related_name='favorites')
+    PUBLIC_STATUS_CHOICES = (
+        (True, 'Public'),
+        (False, 'Private')
+    )
+    name = models.CharField(max_length=100, help_text="Project name")
+    public_status = models.BooleanField(default=False, choices=PUBLIC_STATUS_CHOICES, help_text="Public or private project")
+    description = models.CharField(max_length=1000, help_text="Project description")
+    requirements = models.CharField(max_length=1000, null=True, help_text="Project requirements")   
+    todo = models.CharField(max_length=1000, null=True, help_text="Project To Do list")
+    wireframe = models.FileField(upload_to='wireframes/', blank=True, null=True, help_text="Project image")
+    user_flow_image = models.ImageField(upload_to='user_flows/', blank=True, null=True, help_text="Project video")
+    owner = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE, help_text="Project owner")
+    contributors = models.ManyToManyField(User, related_name='contributors', help_text="Project contributors")
+    favorite = models.ManyToManyField(User, related_name='favorites', help_text="Favorite projects")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ProjectManager()

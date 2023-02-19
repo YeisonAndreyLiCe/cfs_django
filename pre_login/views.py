@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
 import os
-from users.models import User
+
 #from django.contrib import messages
 import bcrypt
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from .models import Cookie
+from django.shortcuts import redirect, render, HttpResponse
 from django.urls import reverse
+from users.models import User
+
+from .forms import RegisterForm
+from .models import Cookie
+
 
 def index(request):
     """ context = {
@@ -21,31 +26,6 @@ def logout(request):
     request.session.flush()
     return redirect('/')
 
-def register(request):
-    return render(request, 'pre_login/register.html')
-
-def register_user(request):
-    if request.method == 'POST':
-        data = {}
-        errors = User.objects.validator(request.POST)
-        if len(errors) > 0:
-            for key, value in errors.items():
-                data[key] = value
-            return JsonResponse(data)
-        else:
-            password = request.POST['password']
-            pw_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-            user = User.objects.create(
-                first_name = request.POST['first_name'],
-                last_name = request.POST['last_name'],
-                email = request.POST['email'],
-                password = pw_hash
-            )
-            request.session['user_id'] = user.id
-            route = reverse("users:projects") 
-            return JsonResponse({'route': route})
-    else:
-        return redirect(reverse('pre_login:register'))
 
 def login_user(request):
     if request.method == 'POST':
@@ -54,7 +34,7 @@ def login_user(request):
             logged_user = user[0]
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['user_id'] = logged_user.id
-                route = reverse('users:projects')  #'/users/'+str(logged_user.id)+'/projects'
+                route = reverse('users:projects')
                 return JsonResponse({'route': route})
             else:
                 return JsonResponse({'error': 'Invalid Password'})
@@ -79,4 +59,33 @@ def set_cookies(request):
         )
         Cookie.save()
         return JsonResponse({'success': 'success'})
+    return redirect(reverse('pre_login:register'))
+
+
+def register(request):
+    if request.method == 'GET':
+        register_form = RegisterForm()
+        return render(request, 'pre_login/register_form.html', {'form': register_form})
+    
+    if request.method == 'POST':
+        errors = User.objects.validator(request.POST)
+        if errors:
+            data = {}
+            for key, value in errors.items():
+                data[key] = value
+            return JsonResponse(data)
+        register_form = RegisterForm(request.POST)
+        if register_form.is_valid():
+            password = request.POST['password']
+            pw_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+            user = User.objects.create(
+                first_name = request.POST['first_name'],
+                last_name = request.POST['last_name'],
+                email = request.POST['email'],
+                password = pw_hash
+            )
+            request.session['user_id'] = user.id
+            route = reverse("users:projects") 
+            return JsonResponse({'route': route})
+        return JsonResponse({'errors': register_form.errors.as_ul()})
     return redirect(reverse('pre_login:register'))
