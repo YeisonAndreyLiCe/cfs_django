@@ -40,3 +40,4 @@ class RegisterForm(ModelForm):
         if not re_email.match(email):
             raise forms.ValidationError("Invalid email address")
         return email
+
